@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MEKEventData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/map_event_kit/core/event_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "返回小院"
+pages = Array[Dictionary]([
+  {
+    "name": "返回",
+    "condition": "always",
+    "key": "",
+    "value": true,
+    "trigger": "interact",
+    "visual": "portal",
+    "commands": [
+      {
+        "op": "transfer",
+        "scene": "res://demo/courtyard.tscn",
+        "spawn": "FromRuins"
+      }
+    ]
+  }
+])

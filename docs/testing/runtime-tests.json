@@ -1,0 +1,126 @@
+{
+	"checks": [
+		{
+			"name": "validate demo chest",
+			"passed": true
+		},
+		{
+			"name": "validate demo guide",
+			"passed": true
+		},
+		{
+			"name": "validate demo gate",
+			"passed": true
+		},
+		{
+			"name": "validate demo return",
+			"passed": true
+		},
+		{
+			"name": "validate demo arrival",
+			"passed": true
+		},
+		{
+			"name": "validate demo sign",
+			"passed": true
+		},
+		{
+			"name": "locked gate does not transfer",
+			"passed": true
+		},
+		{
+			"name": "choice writes result and nested dialogue completes",
+			"passed": true
+		},
+		{
+			"name": "E interaction grants key and exactly ten coins",
+			"passed": true
+		},
+		{
+			"name": "higher-priority self-switch page selected",
+			"passed": true
+		},
+		{
+			"name": "opened chest cannot grant duplicate loot",
+			"passed": true
+		},
+		{
+			"name": "shared event resource keeps per-instance self switches isolated",
+			"passed": true
+		},
+		{
+			"name": "nested disabled branch cannot leak through inner else",
+			"passed": true
+		},
+		{
+			"name": "malformed branch is rejected without locking player",
+			"passed": true
+		},
+		{
+			"name": "save refused during active event",
+			"passed": true
+		},
+		{
+			"name": "destroying waiting event cancels remaining commands and releases lock",
+			"passed": true
+		},
+		{
+			"name": "dialogue awaits real user input",
+			"passed": true
+		},
+		{
+			"name": "destroying dialogue event dismisses UI and cancels coroutine",
+			"passed": true
+		},
+		{
+			"name": "duplicate scene event IDs disable both conflicting instances",
+			"passed": true
+		},
+		{
+			"name": "transfer executes arrival autorun",
+			"passed": true
+		},
+		{
+			"name": "global state survives scene change",
+			"passed": true
+		},
+		{
+			"name": "save complete state, scene and position",
+			"passed": true
+		},
+		{
+			"name": "repeated atomic save and backup replacement",
+			"passed": true
+		},
+		{
+			"name": "self switch survives round-trip map transfer",
+			"passed": true
+		},
+		{
+			"name": "load accepted",
+			"passed": true
+		},
+		{
+			"name": "load restores exact state, scene and position",
+			"passed": true
+		},
+		{
+			"name": "malformed save does not mutate live state",
+			"passed": true
+		},
+		{
+			"name": "event resource serializes",
+			"passed": true
+		},
+		{
+			"name": "event resource preserves nested branch commands on disk",
+			"passed": true
+		},
+		{
+			"name": "only expected malformed-branch and duplicate-ID diagnostics",
+			"passed": true
+		}
+	],
+	"engine": "4.7.2-stable (official)",
+	"failed": 0
+}

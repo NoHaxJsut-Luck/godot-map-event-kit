@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MEKEventData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/map_event_kit/core/event_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "路牌 · 接触触发"
+pages = Array[Dictionary]([
+  {
+    "name": "阅读",
+    "condition": "always",
+    "key": "",
+    "value": true,
+    "trigger": "touch",
+    "visual": "marker",
+    "commands": [
+      {
+        "op": "text",
+        "text": "路牌：北侧是遗迹，东侧藏着一只旧宝箱。\n离开这块区域后，再走近可以重新触发。",
+        "speaker": ""
+      }
+    ]
+  }
+])

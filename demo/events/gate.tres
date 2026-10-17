@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="MEKEventData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/map_event_kit/core/event_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "遗迹门 · 开关检测与传送"
+pages = Array[Dictionary]([
+  {
+    "name": "开门",
+    "condition": "always",
+    "key": "",
+    "value": true,
+    "trigger": "interact",
+    "visual": "door",
+    "commands": [
+      {
+        "op": "if_switch",
+        "key": "has_key",
+        "value": true
+      },
+      {
+        "op": "text",
+        "text": "铜钥匙恰好与锁孔吻合。\n通往遗迹的门打开了。",
+        "speaker": ""
+      },
+      {
+        "op": "wait",
+        "seconds": 0.15
+      },
+      {
+        "op": "transfer",
+        "scene": "res://demo/ruins.tscn",
+        "spawn": "Arrival"
+      },
+      {
+        "op": "else"
+      },
+      {
+        "op": "text",
+        "text": "门锁着。\n需要先找到铜钥匙。",
+        "speaker": ""
+      },
+      {
+        "op": "end"
+      }
+    ]
+  }
+])

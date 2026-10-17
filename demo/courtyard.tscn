@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://demo/world.gd" id="1"]
+[ext_resource type="Script" path="res://demo/player.gd" id="2"]
+[ext_resource type="Script" path="res://addons/map_event_kit/runtime/map_event.gd" id="3"]
+[ext_resource type="Resource" path="res://demo/events/guide.tres" id="4"]
+[ext_resource type="Resource" path="res://demo/events/chest.tres" id="5"]
+[ext_resource type="Resource" path="res://demo/events/gate.tres" id="6"]
+[ext_resource type="Resource" path="res://demo/events/sign.tres" id="7"]
+
+[sub_resource type="CircleShape2D" id="PlayerShape"]
+radius = 11.0
+
+[node name="Courtyard" type="Node2D"]
+script = ExtResource("1")
+region = "courtyard"
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(235, 396)
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("PlayerShape")
+
+[node name="Arrival" type="Marker2D" parent="."]
+position = Vector2(220, 398)
+
+[node name="FromRuins" type="Marker2D" parent="."]
+position = Vector2(616, 345)
+
+[node name="Guide" type="Node2D" parent="."]
+position = Vector2(345, 353)
+script = ExtResource("3")
+event_id = "guide_01"
+display_name = "守门人"
+data = ExtResource("4")
+marker_color = Color(0.81, 0.64, 0.4, 1)
+
+[node name="Chest" type="Node2D" parent="."]
+position = Vector2(755, 347)
+script = ExtResource("3")
+event_id = "chest_01"
+display_name = "旧宝箱"
+data = ExtResource("5")
+marker_color = Color(0.8, 0.7, 0.4, 1)
+
+[node name="Gate" type="Node2D" parent="."]
+position = Vector2(615, 271)
+script = ExtResource("3")
+event_id = "gate_01"
+display_name = "遗迹门"
+data = ExtResource("6")
+marker_color = Color(0.46, 0.77, 0.67, 1)
+
+[node name="Sign" type="Node2D" parent="."]
+position = Vector2(450, 475)
+script = ExtResource("3")
+event_id = "sign_01"
+display_name = "路牌"
+data = ExtResource("7")
+marker_color = Color(0.5, 0.65, 0.5, 1)

@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="MEKEventData" format=3 uid="uid://7237jqjm0b1r"]
+
+[ext_resource type="Script" uid="uid://cwetaeb4ug27" path="res://addons/map_event_kit/core/event_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "小院宝箱 · 独立开关"
+pages = Array[Dictionary]([{
+"commands": [{
+"op": "text",
+"speaker": "",
+"text": "你掀开了宝箱。里面是一把铜钥匙和 10 枚金币。"
+}, {
+"op": "sound",
+"path": "res://demo/audio/chime.wav",
+"volume_db": -10
+}, {
+"key": "has_key",
+"op": "set_switch",
+"value": true
+}, {
+"key": "coins",
+"op": "add_variable",
+"value": 10
+}, {
+"key": "A",
+"op": "set_self_switch",
+"value": true
+}, {
+"op": "text",
+"speaker": "",
+"text": "获得铜钥匙 × 1，金币 +10。
+再来调查时，宝箱会记住自己已经被打开。"
+}],
+"condition": "always",
+"key": "",
+"name": "未打开",
+"trigger": "interact",
+"value": true,
+"visual": "chest"
+}, {
+"commands": [{
+"op": "text",
+"speaker": "",
+"text": "宝箱已经空了。
+你不会重复获得里面的物品。"
+}],
+"condition": "self_switch",
+"key": "A",
+"name": "已经打开",
+"trigger": "interact",
+"value": true,
+"visual": "chest_open"
+}])

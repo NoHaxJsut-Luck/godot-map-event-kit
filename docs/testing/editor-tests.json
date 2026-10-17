@@ -1,0 +1,58 @@
+{
+	"checks": [
+		{
+			"name": "autoload path accepted by build gate",
+			"passed": true
+		},
+		{
+			"name": "autoload UID accepted by build gate",
+			"passed": true
+		},
+		{
+			"name": "editor renders pages and commands",
+			"passed": true
+		},
+		{
+			"name": "form applies command text",
+			"passed": true
+		},
+		{
+			"name": "editor undo restores resource",
+			"passed": true
+		},
+		{
+			"name": "editor redo reapplies resource",
+			"passed": true
+		},
+		{
+			"name": "duplicate command",
+			"passed": true
+		},
+		{
+			"name": "delete command",
+			"passed": true
+		},
+		{
+			"name": "add event page",
+			"passed": true
+		},
+		{
+			"name": "change event page priority",
+			"passed": true
+		},
+		{
+			"name": "delete event page",
+			"passed": true
+		},
+		{
+			"name": "save-as survives resource reload",
+			"passed": true
+		},
+		{
+			"name": "validation status visible",
+			"passed": true
+		}
+	],
+	"engine": "4.7.2-stable (official)",
+	"failed": 0
+}

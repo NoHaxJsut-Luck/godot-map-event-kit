@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="MEKEventData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/map_event_kit/core/event_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "守门人 · 选择与条件分支"
+pages = Array[Dictionary]([
+  {
+    "name": "交谈",
+    "condition": "always",
+    "key": "",
+    "value": true,
+    "trigger": "interact",
+    "visual": "npc",
+    "commands": [
+      {
+        "op": "text",
+        "text": "欢迎来到苔石小院。遗迹的门需要一把铜钥匙。\n这里的对话、宝箱和门，都由事件列表驱动。",
+        "speaker": "守门人"
+      },
+      {
+        "op": "choices",
+        "text": "需要我给你一点提示吗？",
+        "options": [
+          "请给我提示",
+          "我自己探索"
+        ],
+        "key": "guide_choice"
+      },
+      {
+        "op": "if_variable",
+        "key": "guide_choice",
+        "value": 0,
+        "compare": "=="
+      },
+      {
+        "op": "if_switch",
+        "key": "has_key",
+        "value": true
+      },
+      {
+        "op": "text",
+        "text": "你已经拿到钥匙了！去小院北侧的遗迹门吧。",
+        "speaker": "守门人"
+      },
+      {
+        "op": "else"
+      },
+      {
+        "op": "text",
+        "text": "看看小路右侧的宝箱。按 E 或回车就能调查它。",
+        "speaker": "守门人"
+      },
+      {
+        "op": "end"
+      },
+      {
+        "op": "else"
+      },
+      {
+        "op": "text",
+        "text": "好奇心会为你指路。祝你探索愉快。",
+        "speaker": "守门人"
+      },
+      {
+        "op": "end"
+      }
+    ]
+  }
+])

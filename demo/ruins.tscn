@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://demo/world.gd" id="1"]
+[ext_resource type="Script" path="res://demo/player.gd" id="2"]
+[ext_resource type="Script" path="res://addons/map_event_kit/runtime/map_event.gd" id="3"]
+[ext_resource type="Resource" path="res://demo/events/return.tres" id="4"]
+[ext_resource type="Resource" path="res://demo/events/arrival.tres" id="5"]
+
+[sub_resource type="CircleShape2D" id="PlayerShape"]
+radius = 11.0
+
+[node name="Ruins" type="Node2D"]
+script = ExtResource("1")
+region = "ruins"
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(235, 396)
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("PlayerShape")
+
+[node name="Arrival" type="Marker2D" parent="."]
+position = Vector2(220, 398)
+
+[node name="FromRuins" type="Marker2D" parent="."]
+position = Vector2(616, 345)
+
+[node name="Return" type="Node2D" parent="."]
+position = Vector2(145, 355)
+script = ExtResource("3")
+event_id = "return_01"
+display_name = "返回小院"
+data = ExtResource("4")
+marker_color = Color(0.43, 0.7, 0.8, 1)
+
+[node name="ArrivalEvent" type="Node2D" parent="."]
+position = Vector2(615, 300)
+script = ExtResource("3")
+event_id = "arrival_01"
+display_name = "回响石碑"
+data = ExtResource("5")
+marker_color = Color(0.6, 0.8, 0.8, 1)

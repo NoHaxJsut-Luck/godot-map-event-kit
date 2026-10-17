@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="MEKEventData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/map_event_kit/core/event_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+title = "抵达遗迹 · 自动事件"
+pages = Array[Dictionary]([
+  {
+    "name": "首次抵达",
+    "condition": "always",
+    "key": "",
+    "value": true,
+    "trigger": "autorun",
+    "visual": "marker",
+    "commands": [
+      {
+        "op": "set_switch",
+        "key": "visited_ruins",
+        "value": true
+      },
+      {
+        "op": "text",
+        "text": "你抵达了静谧遗迹。\n这是进入地图时自动执行的事件。",
+        "speaker": ""
+      },
+      {
+        "op": "text",
+        "text": "可以保存后重启，再读取进度。\n返回小院后，宝箱的独立开关仍然有效。",
+        "speaker": ""
+      }
+    ]
+  },
+  {
+    "name": "已经抵达",
+    "condition": "switch",
+    "key": "visited_ruins",
+    "value": true,
+    "trigger": "interact",
+    "visual": "marker",
+    "commands": []
+  }
+])
