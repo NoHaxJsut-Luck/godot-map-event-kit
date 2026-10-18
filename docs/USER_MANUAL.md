@@ -10,7 +10,7 @@ Version **0.1.3-alpha** · 2026-10-18 · [GitHub source](https://github.com/NoHa
 
 Map Event Kit adds RPG Maker style event pages and command lists to Godot. Use it for NPC conversations, treasure chests, switches and map transfers. This manual covers installation and everyday editing.
 
-Use **Godot 4.7.2 Standard**, with the Compatibility renderer, for the tested setup. Windows is the tested platform; other Godot 4 versions and platforms are unverified. Godot 3 is unsupported. **The plugin editor supports English, Japanese, Korean and Simplified Chinese.** Open **Map Events** and choose a language from the top-right selector. **Follow Godot** uses the editor language, falling back to English for unsupported languages. Changes take effect immediately and are remembered locally for this project. Pending form input and undo/redo history are preserved. Godot’s own menus and file-dialog controls follow Godot’s settings. The demo now has a separate language selector at the top right during play. It translates its built-in HUD, object names, dialogue and choices, even while a dialogue is open. The setting survives transfers and restarts, and loading a save keeps your current language. On first launch it defaults to English. The selector is always labelled **Language**, and options use their native names. Saved choices are preserved; System / Auto is optional. Event resource text, keys and paths remain unchanged on disk; new user-written dialogue needs its own translation entries. The Chinese labels below remain a reference for the Simplified Chinese setting.
+Use **Godot 4.7.2 Standard**, with the Compatibility renderer, for the tested setup. Windows is the tested platform; other Godot 4 versions and platforms are unverified. Godot 3 is unsupported. **The plugin editor supports English, Japanese, Korean and Simplified Chinese.** Open **Map Events** and choose a language from the top-right selector. **Follow Godot** uses the editor language, falling back to English for unsupported languages. Changes take effect immediately and are remembered locally for this project. Pending form input and undo/redo history are preserved. Godot’s own menus and file-dialog controls follow Godot’s settings. The demo now has a separate language selector at the top right during play. It translates its built-in HUD, object names, dialogue and choices, even while a dialogue is open. The setting survives transfers and restarts, and loading a save keeps your current language. On first launch it defaults to English. The selector is always labelled **Language**, and options use their native names. Saved choices are preserved; System / Auto is optional. Event resource text, keys and paths remain unchanged on disk; new user-written dialogue needs its own translation entries. For the steps below, select **English** in the plugin. Button, field and command names match the English interface.
 
 Download the repository using **Code → Download ZIP**, extract it, and import `project.godot` in Godot. Press **F5**. On Windows, the supplied `Launch Demo.cmd` and `Open Editor.cmd` also work when Godot is discoverable; otherwise use Godot's project manager. The engine is not included.
 
@@ -19,7 +19,7 @@ Move with **WASD / arrow keys**. Approach an event and press **E / Enter / Space
 ### Install in your project
 
 1. Start with a copy of your project. Copy only `addons/map_event_kit` into its `addons` folder; keep its own `project.godot`.
-2. Open **Project → Project Settings → Plugins** and enable **Map Event Kit / 地图事件工坊**. Wait for the initial import to finish. The plugin registers the `MapEvents` autoload.
+2. Open **Project → Project Settings → Plugins** and enable **Map Event Kit**. Wait for the initial import to finish. The plugin registers the `MapEvents` autoload.
 3. If your project already uses an autoload named `MapEvents`, resolve that conflict before continuing. The plugin does not replace it.
 4. In your map scene, add a **MEKMapEvent** node. Set **Event Id** to a unique value such as `village_npc_01`. Set **Display Name** to its visible label. Save the scene.
 5. Add your `Node2D` player to the **map_event_player** group. For a `CharacterBody2D` player, merge the following into the existing script; do not create a second `_ready()` or `_physics_process()`.
@@ -40,31 +40,31 @@ The demo already includes this integration. Your project needs its own movement 
 
 ### Create your first conversation
 
-1. Click **Map Events** in Godot's main screen tabs, then **新建事件** (New event).
-2. In the left column, leave **出现条件 → 无条件** (Condition → Always) and **触发方式 → 确认键交互** (Trigger → Interact). Set **示例外观 → 角色** (Appearance → NPC). Click **应用事件页** (Apply page).
-3. Select the default **显示文字** (Show text) command in the middle column. On the right, enter **说话人** (Speaker) and **消息内容** (Message), then click **应用指令** (Apply command).
-4. Click **另存为…** (Save as) and save as `res://events/village_npc.tres`; create the `events` folder if necessary.
+1. Click **Map Events** in Godot's main screen tabs, then **New event**.
+2. In the left column, leave **Page condition → Always** and **Trigger → Action button**. Set **Demo appearance → Character**. Click **Apply page**.
+3. Select the default **Show text** command in the middle column. On the right, enter **Speaker** and **Message**, then click **Apply command**.
+4. Click **Save as…** and save as `res://events/village_npc.tres`; create the `events` folder if necessary.
 5. Return to the 2D scene and select your event node. Drag the saved resource into its **Data** property. Save the scene.
 6. Run the game, approach the event and press E.
 
-**Apply, then save.** Text entered into a form is not committed until you click its Apply button. Apply the event name with **应用名称**. Save before switching resources or closing the editor. Stop and restart the game to test edits.
+**Apply, then save.** Text entered into a form is not committed until you click its Apply button. Apply the event name with **Apply name**. Save before switching resources or closing the editor. Stop and restart the game to test edits.
 
 ### Edit commands and pages
 
 | Task | Button or field |
 |---|---|
-| Open an existing resource | 打开事件…; or double-click its `.tres` file |
-| Add a command | Select its type, then + 插入; inserted after the selected command |
-| Duplicate or remove a command | 复制指令 / 删除 |
-| Reorder commands | 上移 / 下移 |
-| Add, copy or remove a page | + 页 / 复制 / 删除 in the left column |
+| Open an existing resource | Open event…; or double-click its `.tres` file |
+| Add a command | Select its type, then + Insert; inserted after the selected command |
+| Duplicate or remove a command | Duplicate command / Delete |
+| Reorder commands | Move up / Move down |
+| Add, copy or remove a page | + Page / Duplicate / Delete in the left column |
 | Change page priority | ↑ / ↓ in the left column |
-| Undo or redo applied edits | 撤销 / 重做 |
-| Validate and save | 检查事件, then 保存 |
+| Undo or redo applied edits | Undo / Redo |
+| Validate and save | Validate, then Save |
 
-The **lowest matching page** in the list wins. Choose one condition per page: **无条件** (Always), **全局开关** (Global switch), **独立开关** (Self switch), or **变量阈值** (Variable at least the specified value). Unset switches are false; unset variables are zero.
+The **lowest matching page** in the list wins. Choose one condition per page: **Always**, **Global switch**, **Self switch**, or **Variable threshold**. Variable threshold means greater than or equal to the specified value. Unset switches are false; unset variables are zero.
 
-**确认键交互** uses E or `ui_accept`, within **Interaction Radius** (default 64 pixels). **靠近触发** fires when the player enters a 30-pixel radius; it is not a collision trigger. **自动执行** runs once on entering the active page and can run again after a page change or scene reload. Only one event runs at a time.
+**Action button** uses E or `ui_accept`, within **Interaction Radius** (default 64 pixels). **Proximity** fires when the player enters a 30-pixel radius; it is not a collision trigger. **Autorun** runs once on entering the active page and can run again after a page change or scene reload. Only one event runs at a time.
 
 ### Make a chest that opens once
 
@@ -72,51 +72,51 @@ Create two pages, in this order. Apply every edited command and page, then save.
 
 | Setting | Page 1 | Page 2 |
 |---|---|---|
-| Condition | 无条件 | 独立开关, key `A`, ON |
-| Trigger | 确认键交互 | 确认键交互 |
-| Appearance | 关闭的宝箱 | 打开的宝箱 |
-| Commands in order | 增加变量: `coins`, 10; 设置独立开关: `A`, ON; 显示文字: “Found 10 coins!” | 显示文字: “The chest is empty.” |
+| Condition | Always | Self switch, key `A`, ON |
+| Trigger | Action button | Action button |
+| Appearance | Closed chest | Open chest |
+| Commands in order | Add to variable: `coins`, 10; Set self switch: `A`, ON; Show text: “Found 10 coins!” | Show text: “The chest is empty.” |
 
 Page 2 must be below page 1. Run the game and interact twice. Coins increase only once. Reuse the same event resource for another chest, but give that node a different **Event Id**. To keep progress across restarts, save the game.
 
 ### Choices and branches
 
-Insert **显示选项** (Show choices), enter a question and 2–6 options, one per line, and set the result variable to `answer`. The first option writes **0**, the second **1**. Follow it with this list:
+Insert **Show choices**, enter a question and 2–6 options, one per line, and set the result variable to `answer`. The first option writes **0**, the second **1**. Follow it with this list:
 
 ```text
-条件：变量     answer == 0
-  显示文字    You chose the first option.
-否则
-  显示文字    You chose another option.
-结束分支
+If variable     answer == 0
+  Show text    You chose the first option.
+Else
+  Show text    You chose another option.
+End branch
 ```
 
-Add these as individual commands; the editor displays indentation automatically. Each condition needs **结束分支** (End branch). **结束事件** ends the entire event instead. Use **检查事件** to catch missing branch endings.
+Add these as individual commands; the editor displays indentation automatically. Each condition needs **End branch**. **Stop event** ends the entire event instead. Use **Validate** to catch missing branch endings.
 
 ### Transfer to another map
 
-Save the destination scene, for example `res://maps/ruins.tscn`. Add a `Marker2D` named `Arrival` directly below its root and position it at the entrance. Include a player with the integration above. Add **切换地图** (Transfer), set the scene path and spawn path `Arrival`, apply and save. A nested marker uses a relative path such as `Spawns/Arrival`. Transfer ends the current command list; commands after it do not run.
+Save the destination scene, for example `res://maps/ruins.tscn`. Add a `Marker2D` named `Arrival` directly below its root and position it at the entrance. Include a player with the integration above. Add **Transfer map**, set the scene path and spawn path `Arrival`, apply and save. A nested marker uses a relative path such as `Spawns/Arrival`. Transfer ends the current command list; commands after it do not run.
 
 ### Command reference
 
 | Command in the editor | What to enter or expect |
 |---|---|
-| 显示文字 | Speaker and message; waits for confirmation |
-| 显示选项 | Question, 2–6 option lines, result variable; zero-based result |
-| 设置全局开关 | Switch name and ON/OFF; shared between maps |
-| 设置独立开关 | Switch name and ON/OFF; local to this event identity |
-| 设置变量 | Variable name and integer value |
-| 增加变量 | Variable name and integer amount; negative values subtract |
-| 条件：全局开关 | Switch name and expected ON/OFF |
-| 条件：独立开关 | Self-switch name and expected ON/OFF |
-| 条件：变量 | Variable, comparison and integer value |
-| 否则 | Optional alternative inside a condition |
-| 结束分支 | Close the current condition |
-| 等待 | Duration from 0 to 60 seconds |
-| 切换地图 | Existing `res://` scene and relative spawn path |
-| 播放音效 | Existing `res://` audio path and volume in dB; does not wait |
-| 自定义指令 | Command name and text argument; requires a code handler |
-| 结束事件 | Stop this event immediately |
+| Show text | Speaker and message; waits for confirmation |
+| Show choices | Question, 2–6 option lines, result variable; zero-based result |
+| Set global switch | Switch name and ON/OFF; shared between maps |
+| Set self switch | Switch name and ON/OFF; local to this event identity |
+| Set variable | Variable name and integer value |
+| Add to variable | Variable name and integer amount; negative values subtract |
+| If global switch | Switch name and expected ON/OFF |
+| If self switch | Self-switch name and expected ON/OFF |
+| If variable | Variable, comparison and integer value |
+| Else | Optional alternative inside a condition |
+| End branch | Close the current condition |
+| Wait | Duration from 0 to 60 seconds |
+| Transfer map | Existing `res://` scene and relative spawn path |
+| Play sound | Existing `res://` audio path and volume in dB; does not wait |
+| Custom command | Command name and text argument; requires a code handler |
+| Stop event | Stop this event immediately |
 
 ### Save progress and resolve problems
 
@@ -126,7 +126,7 @@ The demo has Save and Load buttons. In your own UI, call `MapEvents.save_game()`
 |---|---|
 | No Map Events tab or MEKMapEvent node | Enable the plugin, wait for import, then reopen the project if necessary. |
 | E does nothing | Check Data, unique Event Id, player group, active-page condition and distance. Check whether another Control consumes the key. |
-| Changes disappeared | Click 应用指令 / 应用事件页 before 保存. |
+| Changes disappeared | Click Apply command / Apply page before Save. |
 | Chest gives rewards again | Put the self-switch page last, enable A on page 1, and avoid changing the scene path or Event Id after saving. |
 | Player moves during dialogue | Add the `MapEvents.busy` check to every movement path in your controller. |
 | Player appears at the wrong entrance | Check the marker path and the deferred `place_player` call. |
@@ -140,7 +140,7 @@ This Alpha provides map events. It does not include battles, an inventory databa
 
 Map Event Kit は、RPG Maker 風のイベントページとコマンドリストを Godot に追加するプラグインです。NPC との会話、宝箱、スイッチ、マップ移動を作れます。
 
-動作確認済みの環境は **Windows、Godot 4.7.2 Standard、Compatibility レンダラー**です。ほかの Godot 4 バージョンと OS は未検証で、Godot 3 には対応していません。**プラグインのエディターは英語・日本語・韓国語・簡体字中国語に対応しています。** **Map Events** タブ右上の言語選択から **日本語** を選んでください。「Godot に合わせる」は Godot の言語を使用し、未対応の言語では英語になります。変更は即座に反映され、プロジェクトごとにローカル保存されます。未適用の入力や元に戻す・やり直しの履歴は保持されます。Godot 本体のメニューとファイルダイアログは Godot の設定に従います。実行中のデモにも右上に言語選択があります。画面表示、オブジェクト名、内蔵の会話と選択肢を翻訳し、会話の途中でも切り替えられます。設定はマップ移動や再起動後も保持され、ロードしても現在の言語は変わりません。初回起動は英語です。メニューには常に **Language** と表示され、各言語名はその言語の文字で表示されます。選択済みの言語は保持されます。System / Auto は任意で選べます。リソースに保存された原文・キー・パスは変更せず、自作の会話には翻訳の追加が必要です。以下の中国語ラベルは簡体字中国語を選んだ場合の参照用です。
+動作確認済みの環境は **Windows、Godot 4.7.2 Standard、Compatibility レンダラー**です。ほかの Godot 4 バージョンと OS は未検証で、Godot 3 には対応していません。**プラグインのエディターは英語・日本語・韓国語・簡体字中国語に対応しています。** **Map Events** タブ右上の言語選択から **日本語** を選んでください。「Godot に合わせる」は Godot の言語を使用し、未対応の言語では英語になります。変更は即座に反映され、プロジェクトごとにローカル保存されます。未適用の入力や元に戻す・やり直しの履歴は保持されます。Godot 本体のメニューとファイルダイアログは Godot の設定に従います。実行中のデモにも右上に言語選択があります。画面表示、オブジェクト名、内蔵の会話と選択肢を翻訳し、会話の途中でも切り替えられます。設定はマップ移動や再起動後も保持され、ロードしても現在の言語は変わりません。初回起動は英語です。メニューには常に **Language** と表示され、各言語名はその言語の文字で表示されます。選択済みの言語は保持されます。System / Auto は任意で選べます。リソースに保存された原文・キー・パスは変更せず、自作の会話には翻訳の追加が必要です。以下の手順では、プラグインの言語を **日本語** に設定してください。ボタン・項目・コマンド名は日本語の画面表示に合わせています。
 
 [GitHub](https://github.com/NoHaxJsut-Luck/godot-map-event-kit) の **Code → Download ZIP** から取得して展開し、Godot で `project.godot` をインポートして **F5** を押します。Windows 用の `Launch Demo.cmd` と `Open Editor.cmd` は Godot が検出できる環境で利用できます。検出できない場合は Godot のプロジェクトマネージャーを使ってください。エンジンは同梱していません。
 
@@ -149,7 +149,7 @@ Map Event Kit は、RPG Maker 風のイベントページとコマンドリス�
 ### 自分のプロジェクトに導入する
 
 1. プロジェクトのコピーで作業します。`addons/map_event_kit` だけをコピー先の `addons` に入れます。既存の `project.godot` はそのまま使用してください。
-2. **プロジェクト → プロジェクト設定 → プラグイン**で **Map Event Kit / 地图事件工坊** を有効にし、インポート完了を待ちます。`MapEvents` が自動ロードに追加されます。
+2. **プロジェクト → プロジェクト設定 → プラグイン**で **Map Event Kit** を有効にし、インポート完了を待ちます。`MapEvents` が自動ロードに追加されます。
 3. 同名の自動ロードがすでにある場合は、先に名前の競合を解消します。プラグインは既存のものを上書きしません。
 4. マップシーンに **MEKMapEvent** ノードを追加します。**Event Id** に `village_npc_01` など、同じマップで重複しない値を設定し、**Display Name** に表示名を入力してシーンを保存します。
 5. `Node2D` のプレイヤーを **map_event_player** グループに登録します。`CharacterBody2D` を使う場合は、既存のスクリプトに次を組み込みます。同じ関数を二重に定義しないでください。
@@ -170,31 +170,31 @@ func _physics_process(delta: float) -> void:
 
 ### 最初の会話を作る
 
-1. Godot 上部の **Map Events** を開き、**新建事件**（新規イベント）を押します。
-2. 左側で **出现条件 → 无条件**（出現条件 → 無条件）、**触发方式 → 确认键交互**（トリガー → 決定キー）を選びます。**示例外观 → 角色**（仮の外観 → NPC）を選んで **应用事件页**（ページを適用）を押します。
-3. 中央の **显示文字**（文章の表示）を選び、右側の **说话人**（話者）と **消息内容**（本文）を編集して **应用指令**（コマンドを適用）を押します。
-4. **另存为…**（名前を付けて保存）で `res://events/village_npc.tres` に保存します。必要なら `events` フォルダーを作成します。
+1. Godot 上部の **Map Events** を開き、**新規イベント**を押します。
+2. 左側で **出現条件 → 無条件**、**トリガー → 決定キー**を選びます。**サンプル外観 → キャラクター**を選んで **ページを適用**を押します。
+3. 中央の **文章の表示**を選び、右側の **話者**と **メッセージ**を編集して **コマンドを適用**を押します。
+4. **名前を付けて保存…**で `res://events/village_npc.tres` に保存します。必要なら `events` フォルダーを作成します。
 5. 2D 画面に戻り、イベントノードの **Data** に保存したリソースをドラッグします。シーンを保存します。
 6. ゲームを実行し、近づいて E を押します。
 
-**適用してから保存してください。** 入力しただけではリソースに反映されません。名前は **应用名称** で適用します。別のリソースを開く前や終了前に保存し、変更を試すときはゲームを再起動します。
+**適用してから保存してください。** 入力しただけではリソースに反映されません。名前は **名前を適用** で適用します。別のリソースを開く前や終了前に保存し、変更を試すときはゲームを再起動します。
 
 ### 編集操作とページの選び方
 
-| 操作 | 中国語のボタン |
+| 操作 | ボタン・項目 |
 |---|---|
-| 開く | 打开事件…、または `.tres` をダブルクリック |
-| コマンドを追加 | 種類を選択して + 插入。選択中のコマンドの直後に追加 |
-| コマンドを複製・削除 | 复制指令 / 删除 |
-| コマンドを並べ替え | 上移 / 下移 |
-| ページを追加・複製・削除 | 左側の + 页 / 复制 / 删除 |
+| 開く | イベントを開く…、または `.tres` をダブルクリック |
+| コマンドを追加 | 種類を選択して + 挿入。選択中のコマンドの直後に追加 |
+| コマンドを複製・削除 | コマンドを複製 / 削除 |
+| コマンドを並べ替え | 上へ / 下へ |
+| ページを追加・複製・削除 | 左側の + ページ / 複製 / 削除 |
 | ページの優先順位を変更 | 左側の ↑ / ↓ |
-| 元に戻す・やり直す | 撤销 / 重做 |
-| 検査・保存 | 检查事件 → 保存 |
+| 元に戻す・やり直す | 元に戻す / やり直す |
+| 検査・保存 | 検証 → 保存 |
 
-条件を満たすページのうち、**一番下のページが優先**されます。条件は **无条件**（無条件）、**全局开关**（共通スイッチ）、**独立开关**（セルフスイッチ）、**变量阈值**（変数が指定値以上）のいずれか1つです。未設定のスイッチは OFF、変数は0として扱います。
+条件を満たすページのうち、**一番下のページが優先**されます。条件は **無条件**、**グローバルスイッチ**、**セルフスイッチ**、**変数のしきい値**のいずれか1つです。「変数のしきい値」は、変数が指定値以上であることを意味します。未設定のスイッチは OFF、変数は0として扱います。
 
-**确认键交互** は E または `ui_accept` で起動し、距離は **Interaction Radius**（初期値64ピクセル）です。**靠近触发** は30ピクセル未満の範囲に入ると起動し、衝突判定ではありません。**自动执行** はそのページが有効になったときに1回実行され、ページ切り替えやシーンの再読み込みで再実行できます。同時に実行できるイベントは1つです。
+**決定キー** は E または `ui_accept` で起動し、距離は **Interaction Radius**（初期値64ピクセル）です。**接近** は30ピクセル未満の範囲に入ると起動し、衝突判定ではありません。**自動実行** はそのページが有効になったときに1回実行され、ページ切り替えやシーンの再読み込みで再実行できます。同時に実行できるイベントは1つです。
 
 ### 一度だけ開く宝箱
 
@@ -202,51 +202,51 @@ func _physics_process(delta: float) -> void:
 
 | 項目 | ページ1 | ページ2 |
 |---|---|---|
-| 条件 | 无条件 | 独立开关、名前 `A`、ON |
-| 起動方法 | 确认键交互 | 确认键交互 |
-| 外観 | 关闭的宝箱 | 打开的宝箱 |
-| コマンドの順序 | 增加变量：`coins` に10加算 → 设置独立开关：`A` を ON → 显示文字：「10コインを手に入れた！」 | 显示文字：「空っぽだ。」 |
+| 条件 | 無条件 | セルフスイッチ、名前 `A`、ON |
+| 起動方法 | 決定キー | 決定キー |
+| 外観 | 閉じた宝箱 | 開いた宝箱 |
+| コマンドの順序 | 変数の加算：`coins` に10加算 → セルフスイッチの操作：`A` を ON → 文章の表示：「10コインを手に入れた！」 | 文章の表示：「空っぽだ。」 |
 
 ページ2を下に置き、2回調べてコインが1回だけ増えることを確認します。同じリソースを別の宝箱に使うときは、ノードの **Event Id** を変えてください。再起動後も状態を残すにはゲームを保存します。
 
 ### 選択肢と条件分岐
 
-**显示选项**（選択肢の表示）で質問、1行1項目の選択肢を2～6個、結果変数 `answer` を入力します。最初の選択肢は **0**、2番目は **1** です。続けて次のコマンドを個別に追加します。
+**選択肢の表示**で質問、1行1項目の選択肢を2～6個、結果変数 `answer` を入力します。最初の選択肢は **0**、2番目は **1** です。続けて次のコマンドを個別に追加します。
 
 ```text
-条件：变量     answer == 0
-  显示文字    最初の選択肢を選びました。
-否则
-  显示文字    ほかの選択肢を選びました。
-结束分支
+条件：変数     answer == 0
+  文章の表示    最初の選択肢を選びました。
+それ以外
+  文章の表示    ほかの選択肢を選びました。
+分岐終了
 ```
 
-字下げは自動表示されます。条件ごとに **结束分支**（分岐終了）が必要です。**结束事件** はイベント全体を終了する別のコマンドです。**检查事件** で閉じ忘れを確認できます。
+字下げは自動表示されます。条件ごとに **分岐終了**が必要です。**イベント終了** はイベント全体を終了する別のコマンドです。**検証** で閉じ忘れを確認できます。
 
 ### 別のマップへ移動する
 
-移動先を `res://maps/ruins.tscn` などに保存し、そのルート直下に `Arrival` という `Marker2D` を置きます。上記の接続済みプレイヤーも配置します。**切换地图**（マップ移動）にシーンのパスと出現地点 `Arrival` を入力して適用・保存します。マーカーが入れ子なら `Spawns/Arrival` のようにルートからの相対パスを指定します。移動すると現在のコマンドリストは終了し、後続のコマンドは実行されません。
+移動先を `res://maps/ruins.tscn` などに保存し、そのルート直下に `Arrival` という `Marker2D` を置きます。上記の接続済みプレイヤーも配置します。**場所移動**にシーンのパスと出現地点 `Arrival` を入力して適用・保存します。マーカーが入れ子なら `Spawns/Arrival` のようにルートからの相対パスを指定します。移動すると現在のコマンドリストは終了し、後続のコマンドは実行されません。
 
 ### コマンド一覧
 
-| 中国語のコマンド | 設定と動作 |
+| コマンド | 設定と動作 |
 |---|---|
-| 显示文字 | 話者と本文。決定を待つ |
-| 显示选项 | 質問、2～6個の選択肢、結果変数。結果は0から |
-| 设置全局开关 | 全マップ共通のスイッチ名と ON/OFF |
-| 设置独立开关 | このイベント専用のスイッチ名と ON/OFF |
-| 设置变量 | 変数名と整数値 |
-| 增加变量 | 変数名と加算値。負の値で減算 |
-| 条件：全局开关 | 共通スイッチ名と比較する ON/OFF |
-| 条件：独立开关 | セルフスイッチ名と比較する ON/OFF |
-| 条件：变量 | 変数名、比較方法、整数値 |
-| 否则 | 条件を満たさない場合の処理 |
-| 结束分支 | 現在の条件分岐を閉じる |
-| 等待 | 0～60秒待つ |
-| 切换地图 | 存在する `res://` シーンと出現地点の相対パス |
-| 播放音效 | 存在する `res://` 音声ファイルと音量 dB。再生終了は待たない |
-| 自定义指令 | 名前と文字列引数。受け取り側のコードが必要 |
-| 结束事件 | イベントを終了する |
+| 文章の表示 | 話者と本文。決定を待つ |
+| 選択肢の表示 | 質問、2～6個の選択肢、結果変数。結果は0から |
+| グローバルスイッチの操作 | 全マップ共通のスイッチ名と ON/OFF |
+| セルフスイッチの操作 | このイベント専用のスイッチ名と ON/OFF |
+| 変数の代入 | 変数名と整数値 |
+| 変数の加算 | 変数名と加算値。負の値で減算 |
+| 条件：グローバルスイッチ | 共通スイッチ名と比較する ON/OFF |
+| 条件：セルフスイッチ | セルフスイッチ名と比較する ON/OFF |
+| 条件：変数 | 変数名、比較方法、整数値 |
+| それ以外 | 条件を満たさない場合の処理 |
+| 分岐終了 | 現在の条件分岐を閉じる |
+| ウェイト | 0～60秒待つ |
+| 場所移動 | 存在する `res://` シーンと出現地点の相対パス |
+| 効果音の再生 | 存在する `res://` 音声ファイルと音量 dB。再生終了は待たない |
+| カスタムコマンド | 名前と文字列引数。受け取り側のコードが必要 |
+| イベント終了 | イベントを終了する |
 
 ### 保存とトラブル対処
 
@@ -256,7 +256,7 @@ func _physics_process(delta: float) -> void:
 |---|---|
 | タブやノードが見つからない | プラグインを有効化し、インポートを待つ。必要ならプロジェクトを開き直す |
 | E で起動しない | Data、重複しない Event Id、プレイヤーのグループ、ページ条件、距離、入力を消費する Control を確認 |
-| 編集が消える | 应用指令 / 应用事件页 を押してから 保存 |
+| 編集が消える | コマンドを適用 / ページを適用 を押してから 保存 |
 | 宝箱の報酬が繰り返される | セルフスイッチのページを最後に置き、ページ1で A を ON にする。保存後にシーンパスや Event Id を変更しない |
 | 会話中も移動する | すべての移動処理で `MapEvents.busy` を確認 |
 | 出現位置が違う | マーカーのパスと遅延呼び出しの `place_player` を確認 |
@@ -270,7 +270,7 @@ func _physics_process(delta: float) -> void:
 
 Map Event Kit는 Godot에 RPG Maker 방식의 이벤트 페이지와 명령 목록을 추가하는 플러그인입니다. NPC 대화, 보물 상자, 스위치, 맵 이동을 만들 수 있습니다.
 
-검증 환경은 **Windows, Godot 4.7.2 Standard, Compatibility 렌더러**입니다. 다른 Godot 4 버전과 운영체제는 미검증이며 Godot 3은 지원하지 않습니다. **플러그인 편집기는 영어, 일본어, 한국어, 중국어 간체를 지원합니다.** **Map Events** 탭 오른쪽 위에서 **한국어**를 선택하세요. "Godot 설정 따르기"는 Godot 편집기 언어를 사용하며 미지원 언어는 영어로 표시합니다. 변경은 즉시 적용되고 프로젝트별로 로컬에 저장됩니다. 아직 적용하지 않은 입력과 실행 취소/다시 실행 기록은 유지됩니다. Godot 자체 메뉴와 파일 대화상자는 Godot 설정을 따릅니다. 실행 중인 데모의 오른쪽 위에서도 언어를 선택할 수 있습니다. 화면, 오브젝트 이름, 기본 대사와 선택지가 번역되며 대화 중에도 전환할 수 있습니다. 맵 이동과 재시작 후에도 설정이 유지되고 저장 파일을 불러와도 현재 언어는 바뀌지 않습니다. 처음 실행하면 영어로 표시합니다. 메뉴 이름은 항상 **Language**이며 각 언어는 해당 언어의 이름으로 표시합니다. 저장된 선택은 유지되고 System / Auto는 선택 사항입니다. 리소스에 저장된 원문, 키, 경로는 바꾸지 않으며 직접 작성한 대사에는 번역을 추가해야 합니다. 아래 중국어 라벨은 중국어 간체 설정의 참고용입니다.
+검증 환경은 **Windows, Godot 4.7.2 Standard, Compatibility 렌더러**입니다. 다른 Godot 4 버전과 운영체제는 미검증이며 Godot 3은 지원하지 않습니다. **플러그인 편집기는 영어, 일본어, 한국어, 중국어 간체를 지원합니다.** **Map Events** 탭 오른쪽 위에서 **한국어**를 선택하세요. "Godot 설정 따르기"는 Godot 편집기 언어를 사용하며 미지원 언어는 영어로 표시합니다. 변경은 즉시 적용되고 프로젝트별로 로컬에 저장됩니다. 아직 적용하지 않은 입력과 실행 취소/다시 실행 기록은 유지됩니다. Godot 자체 메뉴와 파일 대화상자는 Godot 설정을 따릅니다. 실행 중인 데모의 오른쪽 위에서도 언어를 선택할 수 있습니다. 화면, 오브젝트 이름, 기본 대사와 선택지가 번역되며 대화 중에도 전환할 수 있습니다. 맵 이동과 재시작 후에도 설정이 유지되고 저장 파일을 불러와도 현재 언어는 바뀌지 않습니다. 처음 실행하면 영어로 표시합니다. 메뉴 이름은 항상 **Language**이며 각 언어는 해당 언어의 이름으로 표시합니다. 저장된 선택은 유지되고 System / Auto는 선택 사항입니다. 리소스에 저장된 원문, 키, 경로는 바꾸지 않으며 직접 작성한 대사에는 번역을 추가해야 합니다. 아래 절차를 따라 할 때는 플러그인 언어를 **한국어**로 선택하세요. 버튼, 항목, 명령 이름은 한국어 화면 표시와 일치합니다.
 
 [GitHub](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)에서 **Code → Download ZIP**으로 내려받아 압축을 풉니다. Godot에서 `project.godot`를 가져온 뒤 **F5**를 누릅니다. Windows의 `Launch Demo.cmd`와 `Open Editor.cmd`는 Godot을 찾을 수 있을 때 사용할 수 있습니다. 찾지 못하면 Godot 프로젝트 관리자를 이용하세요. 엔진은 포함되어 있지 않습니다.
 
@@ -279,7 +279,7 @@ Map Event Kit는 Godot에 RPG Maker 방식의 이벤트 페이지와 명령 목�
 ### 기존 프로젝트에 설치하기
 
 1. 프로젝트 복사본에서 시작하세요. `addons/map_event_kit`만 자신의 `addons` 폴더에 복사합니다. 기존 `project.godot`는 유지하세요.
-2. **프로젝트 → 프로젝트 설정 → 플러그인**에서 **Map Event Kit / 地图事件工坊**을 활성화하고 가져오기가 끝날 때까지 기다립니다. `MapEvents` 자동 로드가 등록됩니다.
+2. **프로젝트 → 프로젝트 설정 → 플러그인**에서 **Map Event Kit**을 활성화하고 가져오기가 끝날 때까지 기다립니다. `MapEvents` 자동 로드가 등록됩니다.
 3. 이미 같은 이름의 자동 로드가 있다면 이름 충돌을 먼저 해결하세요. 플러그인은 기존 항목을 덮어쓰지 않습니다.
 4. 맵 씬에 **MEKMapEvent** 노드를 추가합니다. **Event Id**에 같은 맵에서 중복되지 않는 `village_npc_01` 같은 값을 입력하고, **Display Name**에 표시 이름을 입력한 뒤 씬을 저장합니다.
 5. `Node2D` 플레이어를 **map_event_player** 그룹에 넣습니다. `CharacterBody2D` 플레이어라면 아래 내용을 기존 스크립트에 합치세요. 같은 함수를 중복으로 만들지 마세요.
@@ -300,31 +300,31 @@ func _physics_process(delta: float) -> void:
 
 ### 첫 대화 만들기
 
-1. Godot 상단의 **Map Events** 탭에서 **新建事件**(새 이벤트)을 누릅니다.
-2. 왼쪽에서 **出现条件 → 无条件**(등장 조건 → 항상), **触发方式 → 确认键交互**(실행 방식 → 확인 키)를 선택합니다. **示例外观 → 角色**(임시 외형 → NPC)를 선택한 뒤 **应用事件页**(페이지 적용)를 누릅니다.
-3. 가운데의 기본 **显示文字**(텍스트 표시) 명령을 선택합니다. 오른쪽 **说话人**(화자)과 **消息内容**(내용)을 수정하고 **应用指令**(명령 적용)을 누릅니다.
-4. **另存为…**(다른 이름으로 저장)를 눌러 `res://events/village_npc.tres`로 저장합니다. 필요하면 `events` 폴더를 만드세요.
+1. Godot 상단의 **Map Events** 탭에서 **새 이벤트**를 누릅니다.
+2. 왼쪽에서 **출현 조건 → 조건 없음**, **실행 조건 → 확인 키**를 선택합니다. **예제 외형 → 캐릭터**를 선택한 뒤 **페이지 적용**을 누릅니다.
+3. 가운데의 기본 **문장 표시** 명령을 선택합니다. 오른쪽 **화자**와 **메시지**를 수정하고 **명령 적용**을 누릅니다.
+4. **다른 이름으로 저장…** 버튼을 눌러 `res://events/village_npc.tres`로 저장합니다. 필요하면 `events` 폴더를 만드세요.
 5. 2D 화면에서 이벤트 노드를 선택하고 저장한 리소스를 **Data** 속성으로 드래그합니다. 씬을 저장합니다.
 6. 게임을 실행하고 이벤트 가까이에서 E를 누릅니다.
 
-**적용한 다음 저장하세요.** 입력만 하면 리소스에 반영되지 않습니다. 이벤트 이름은 **应用名称**으로 적용합니다. 다른 리소스를 열거나 종료하기 전에 저장하고, 변경 사항은 게임을 다시 실행해 확인하세요.
+**적용한 다음 저장하세요.** 입력만 하면 리소스에 반영되지 않습니다. 이벤트 이름은 **이름 적용**으로 적용합니다. 다른 리소스를 열거나 종료하기 전에 저장하고, 변경 사항은 게임을 다시 실행해 확인하세요.
 
 ### 편집과 페이지 우선순위
 
-| 작업 | 중국어 버튼 |
+| 작업 | 버튼 또는 항목 |
 |---|---|
-| 리소스 열기 | 打开事件… 또는 `.tres` 더블 클릭 |
-| 명령 추가 | 유형을 선택하고 + 插入. 선택한 명령 다음에 삽입 |
-| 명령 복제 또는 삭제 | 复制指令 / 删除 |
-| 명령 순서 변경 | 上移 / 下移 |
-| 페이지 추가 또는 복제 또는 삭제 | 왼쪽의 + 页 / 复制 / 删除 |
+| 리소스 열기 | 이벤트 열기… 또는 `.tres` 더블 클릭 |
+| 명령 추가 | 유형을 선택하고 + 삽입. 선택한 명령 다음에 삽입 |
+| 명령 복제 또는 삭제 | 명령 복제 / 삭제 |
+| 명령 순서 변경 | 위로 / 아래로 |
+| 페이지 추가 또는 복제 또는 삭제 | 왼쪽의 + 페이지 / 복제 / 삭제 |
 | 페이지 우선순위 변경 | 왼쪽의 ↑ / ↓ |
-| 실행 취소 또는 다시 실행 | 撤销 / 重做 |
-| 검사하고 저장 | 检查事件 → 保存 |
+| 실행 취소 또는 다시 실행 | 실행 취소 / 다시 실행 |
+| 검사하고 저장 | 검사 → 저장 |
 
-조건을 만족하는 페이지 중 **가장 아래에 있는 페이지가 우선**입니다. 페이지당 조건 하나를 선택합니다. **无条件**(항상), **全局开关**(전역 스위치), **独立开关**(셀프 스위치), **变量阈值**(변수가 지정값 이상)입니다. 설정하지 않은 스위치는 OFF, 변수는 0입니다.
+조건을 만족하는 페이지 중 **가장 아래에 있는 페이지가 우선**입니다. 페이지당 조건 하나를 선택합니다. **조건 없음**, **전역 스위치**, **셀프 스위치**, **변수 임계값**입니다. 변수 임계값은 변수가 지정한 값 이상일 때 조건을 만족한다는 뜻입니다. 설정하지 않은 스위치는 OFF, 변수는 0입니다.
 
-**确认键交互**는 E 또는 `ui_accept`로 실행하며 **Interaction Radius**의 기본값은 64픽셀입니다. **靠近触发**는 플레이어가 30픽셀 미만 범위에 들어오면 실행하며 충돌 기반 트리거는 아닙니다. **自动执行**는 해당 페이지가 활성화될 때 한 번 실행하며, 페이지가 바뀌거나 씬을 다시 불러오면 재실행될 수 있습니다. 이벤트는 한 번에 하나만 실행됩니다.
+**확인 키**는 E 또는 `ui_accept`로 실행하며 **Interaction Radius**의 기본값은 64픽셀입니다. **접근**은 플레이어가 30픽셀 미만 범위에 들어오면 실행하며 충돌 기반 트리거는 아닙니다. **자동 실행**은 해당 페이지가 활성화될 때 한 번 실행하며, 페이지가 바뀌거나 씬을 다시 불러오면 재실행될 수 있습니다. 이벤트는 한 번에 하나만 실행됩니다.
 
 ### 한 번만 열리는 상자 만들기
 
@@ -332,51 +332,51 @@ func _physics_process(delta: float) -> void:
 
 | 항목 | 페이지 1 | 페이지 2 |
 |---|---|---|
-| 조건 | 无条件 | 独立开关, 이름 `A`, ON |
-| 실행 방식 | 确认键交互 | 确认键交互 |
-| 외형 | 关闭的宝箱 | 打开的宝箱 |
-| 명령 순서 | 增加变量: `coins`에 10 추가 → 设置独立开关: `A` ON → 显示文字: “동전 10개를 얻었다!” | 显示文字: “상자가 비어 있다.” |
+| 조건 | 조건 없음 | 셀프 스위치, 이름 `A`, ON |
+| 실행 방식 | 확인 키 | 확인 키 |
+| 외형 | 닫힌 상자 | 열린 상자 |
+| 명령 순서 | 변수에 더하기: `coins`에 10 추가 → 셀프 스위치 설정: `A` ON → 문장 표시: “동전 10개를 얻었다!” | 문장 표시: “상자가 비어 있다.” |
 
 페이지 2를 아래에 놓고 두 번 상호작용해 동전이 한 번만 늘어나는지 확인하세요. 다른 상자에서 같은 리소스를 사용하려면 노드의 **Event Id**를 다르게 설정합니다. 재시작 후에도 진행을 유지하려면 게임을 저장하세요.
 
 ### 선택지와 조건 분기
 
-**显示选项**(선택지 표시)에서 질문, 한 줄에 하나씩 2~6개의 선택지, 결과 변수 `answer`를 입력합니다. 첫 선택지는 **0**, 두 번째는 **1**을 기록합니다. 다음 명령들을 각각 추가하세요.
+**선택지 표시**에서 질문, 한 줄에 하나씩 2~6개의 선택지, 결과 변수 `answer`를 입력합니다. 첫 선택지는 **0**, 두 번째는 **1**을 기록합니다. 다음 명령들을 각각 추가하세요.
 
 ```text
-条件：变量     answer == 0
-  显示文字    첫 번째 선택지를 골랐습니다.
-否则
-  显示文字    다른 선택지를 골랐습니다.
-结束分支
+조건: 변수     answer == 0
+  문장 표시    첫 번째 선택지를 골랐습니다.
+그 외
+  문장 표시    다른 선택지를 골랐습니다.
+분기 종료
 ```
 
-들여쓰기는 자동 표시됩니다. 조건마다 **结束分支**(분기 종료)가 필요합니다. **结束事件**는 이벤트 전체를 종료하는 별도 명령입니다. **检查事件**로 누락된 분기 종료를 확인하세요.
+들여쓰기는 자동 표시됩니다. 조건마다 **분기 종료**가 필요합니다. **이벤트 종료**는 이벤트 전체를 종료하는 별도 명령입니다. **검사**로 누락된 분기 종료를 확인하세요.
 
 ### 다른 맵으로 이동하기
 
-목적지 씬을 `res://maps/ruins.tscn` 같은 경로에 저장합니다. 루트 바로 아래에 `Arrival`이라는 `Marker2D`를 추가하고 입구에 배치하세요. 위 연결 코드를 사용하는 플레이어도 있어야 합니다. **切换地图**(맵 이동)에 씬 경로와 출현 지점 `Arrival`을 입력하고 적용한 뒤 저장합니다. 중첩된 마커라면 `Spawns/Arrival`처럼 루트 기준 상대 경로를 사용하세요. 맵 이동은 현재 명령 목록을 끝내므로 뒤에 놓인 명령은 실행되지 않습니다.
+목적지 씬을 `res://maps/ruins.tscn` 같은 경로에 저장합니다. 루트 바로 아래에 `Arrival`이라는 `Marker2D`를 추가하고 입구에 배치하세요. 위 연결 코드를 사용하는 플레이어도 있어야 합니다. **장소 이동**에 씬 경로와 출현 지점 `Arrival`을 입력하고 적용한 뒤 저장합니다. 중첩된 마커라면 `Spawns/Arrival`처럼 루트 기준 상대 경로를 사용하세요. 맵 이동은 현재 명령 목록을 끝내므로 뒤에 놓인 명령은 실행되지 않습니다.
 
 ### 명령 목록
 
-| 중국어 명령 | 설정과 동작 |
+| 명령 | 설정과 동작 |
 |---|---|
-| 显示文字 | 화자와 내용. 확인을 기다림 |
-| 显示选项 | 질문, 선택지 2~6개, 결과 변수. 결과는 0부터 시작 |
-| 设置全局开关 | 모든 맵에서 공유하는 스위치 이름과 ON/OFF |
-| 设置独立开关 | 이 이벤트만 사용하는 스위치 이름과 ON/OFF |
-| 设置变量 | 변수 이름과 정수 값 |
-| 增加变量 | 변수 이름과 증가량. 음수이면 감소 |
-| 条件：全局开关 | 전역 스위치 이름과 비교할 ON/OFF |
-| 条件：独立开关 | 셀프 스위치 이름과 비교할 ON/OFF |
-| 条件：变量 | 변수, 비교 연산, 정수 값 |
-| 否则 | 조건이 거짓일 때 실행할 분기 |
-| 结束分支 | 현재 조건 분기를 닫음 |
-| 等待 | 0~60초 대기 |
-| 切换地图 | 존재하는 `res://` 씬과 출현 지점 상대 경로 |
-| 播放音效 | 존재하는 `res://` 오디오 경로와 dB 음량. 재생 종료를 기다리지 않음 |
-| 自定义指令 | 명령 이름과 문자열 인수. 별도 처리 코드 필요 |
-| 结束事件 | 현재 이벤트 종료 |
+| 문장 표시 | 화자와 내용. 확인을 기다림 |
+| 선택지 표시 | 질문, 선택지 2~6개, 결과 변수. 결과는 0부터 시작 |
+| 전역 스위치 설정 | 모든 맵에서 공유하는 스위치 이름과 ON/OFF |
+| 셀프 스위치 설정 | 이 이벤트만 사용하는 스위치 이름과 ON/OFF |
+| 변수 설정 | 변수 이름과 정수 값 |
+| 변수에 더하기 | 변수 이름과 증가량. 음수이면 감소 |
+| 조건: 전역 스위치 | 전역 스위치 이름과 비교할 ON/OFF |
+| 조건: 셀프 스위치 | 셀프 스위치 이름과 비교할 ON/OFF |
+| 조건: 변수 | 변수, 비교 연산, 정수 값 |
+| 그 외 | 조건이 거짓일 때 실행할 분기 |
+| 분기 종료 | 현재 조건 분기를 닫음 |
+| 대기 | 0~60초 대기 |
+| 장소 이동 | 존재하는 `res://` 씬과 출현 지점 상대 경로 |
+| 효과음 재생 | 존재하는 `res://` 오디오 경로와 dB 음량. 재생 종료를 기다리지 않음 |
+| 사용자 정의 명령 | 명령 이름과 문자열 인수. 별도 처리 코드 필요 |
+| 이벤트 종료 | 현재 이벤트 종료 |
 
 ### 저장과 문제 해결
 
@@ -386,7 +386,7 @@ func _physics_process(delta: float) -> void:
 |---|---|
 | 탭이나 이벤트 노드가 없음 | 플러그인을 활성화하고 가져오기를 기다립니다. 필요하면 프로젝트를 다시 엽니다 |
 | E를 눌러도 반응 없음 | Data, 고유 Event Id, 플레이어 그룹, 페이지 조건, 거리, 키 입력을 소비하는 Control을 확인합니다 |
-| 수정 내용이 사라짐 | 应用指令 / 应用事件页를 누른 다음 保存을 누릅니다 |
+| 수정 내용이 사라짐 | 명령 적용 / 페이지 적용을 누른 다음 저장을 누릅니다 |
 | 상자 보상을 반복 지급함 | 셀프 스위치 페이지를 마지막에 두고 페이지 1에서 A를 ON으로 설정합니다. 저장 후 씬 경로나 Event Id를 바꾸지 마세요 |
 | 대화 중에도 이동함 | 모든 이동 경로에 `MapEvents.busy` 검사를 추가합니다 |
 | 출현 위치가 잘못됨 | 마커 경로와 지연 호출한 `place_player`를 확인합니다 |
