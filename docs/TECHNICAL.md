@@ -1,6 +1,6 @@
 # Map Event Kit Technical Documentation
 
-Version **0.1.1-alpha** · 2026-10-18
+Version **0.1.2-alpha** · 2026-10-18
 
 Repository: [NoHaxJsut-Luck/godot-map-event-kit](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)
 
@@ -10,7 +10,7 @@ Repository: [NoHaxJsut-Luck/godot-map-event-kit](https://github.com/NoHaxJsut-Lu
 
 Map Event Kit implements a Godot editor for event pages and a small sequential interpreter for map interactions. A scene node supplies identity and triggering; a resource supplies conditions and commands; an autoload holds state across scene changes. It is intended for conversations, chests, gates and scene transitions.
 
-The tested configuration is **Godot 4.7.2 Standard on Windows with the Compatibility renderer**. Runtime checks, editor checks and a fresh addon installation have passed. These results do not establish compatibility with arbitrary existing projects, other engine versions or exported builds. The editor interface and manual support English, Japanese, Korean and Simplified Chinese. Authored demo story text remains Chinese.
+The tested configuration is **Godot 4.7.2 Standard on Windows with the Compatibility renderer**. Runtime checks, editor checks and a fresh addon installation have passed. These results do not establish compatibility with arbitrary existing projects, other engine versions or exported builds. The editor interface and manual support English, Japanese, Korean and Simplified Chinese. The running demo also localizes its built-in HUD, captions, story and choices.
 
 ## Source layout
 
@@ -162,7 +162,7 @@ Sound playback does not block. `custom` does not await asynchronous listeners. W
 
 `dialogue.gd` creates a `CanvasLayer` on layer 90 with a bottom panel, speaker label, wrapped message label and horizontal row of buttons. `ask(command)` rebuilds the buttons, shows the panel, defers focus to the first button and awaits `answered`. A text command uses one continuation button; choices return their zero-based index. `cancel()` resolves the pending question with `-1`.
 
-This UI has no typewriter effect, text localization, pagination or portrait system. Long messages and long option labels may require layout work for the target resolution. To integrate an existing dialogue system, preserve the runner's awaited answer and cancellation contract instead of showing a second independent dialogue window. `auto_answer` is a test hook; leave it at its default `-1` in gameplay.
+This UI supports an optional text-translation callback; it has no typewriter effect, pagination or portrait system. Long messages and long option labels may require layout work for the target resolution. To integrate an existing dialogue system, preserve the runner's awaited answer and cancellation contract instead of showing a second independent dialogue window. `auto_answer` is a test hook; leave it at its default `-1` in gameplay.
 
 ## Player and scene integration
 
@@ -236,9 +236,21 @@ The panel's `language_choice` is `auto`, `en`, `ja`, `ko` or `zh_CN`. The `auto`
 
 Labels and dropdown display strings carry source-message metadata. `_apply_language()` updates those nodes in place, leaving form controls, selection, user text, option metadata, resource data and undo history intact. It refreshes command summaries and diagnostics without rebuilding the forms. The addon does not call `TranslationServer.set_locale()` or register global translations, and disables automatic translation on its panel to prevent the host game's catalog from rewriting authored content.
 
-`MEKEventData.validate(data, locale)` produces localized page/command prefixes and error messages. The optional locale defaults to `zh_CN` to preserve runtime behavior for existing callers. `default_page(locale)` and `default_command(op, locale)` localize starter text only when a new resource or command is created. Existing dialogue, page names, command identifiers, keys and paths are never translated. The demo's story and runtime dialogue are outside this editor-language feature.
+`MEKEventData.validate(data, locale)` produces localized page/command prefixes and error messages. The optional locale defaults to `zh_CN` to preserve runtime behavior for existing callers. `default_page(locale)` and `default_command(op, locale)` localize starter text only when a new resource or command is created. Existing dialogue, page names, command identifiers, keys and paths are never translated. Demo runtime localization is separate from this editor-language preference.
 
 Editor regression checks exercise all four languages through the picker signal, pending text/number/boolean and choice inputs, resource immutability, validation messages, preference persistence on panel recreation, regional fallback, and undo/redo across language switches. Screenshots can be generated using the non-headless editor harness; these do not establish compatibility with other platforms.
+
+## Demo runtime localization
+
+`demo/localization.gd` is instantiated once as `DemoLocale`, a child of the persistent `MapEvents` autoload, by the demo world. It survives map changes. Its catalog translates original Chinese source strings into English, Japanese and Korean, reusing the core catalog for shared labels. Chinese is the original source; unknown strings pass through unchanged. Source-text lookup means edited or newly authored story text needs matching catalog entries. Event resources, operation IDs and choice order are never rewritten.
+
+The demo selector offers System language, English, Japanese, Korean and Simplified Chinese. The default resolves `OS.get_locale_language()` and falls back to English. Preferences are stored in `user://map_event_kit/demo_settings.cfg`, separately from progress and editor metadata. Game-save version 1 remains unchanged; loading or resetting progress does not replace the language. Preference-write failures appear in the notice area. `--demo-language=en` (also `ja`, `ko`, `zh_CN`, `auto`) overrides the initial choice without saving it, useful for previews.
+
+The runtime exposes `set_text_translator(translator: Callable)` and `translate_text(source: String) -> String`, plus `presentation_changed`. An empty or invalid callable returns the source unchanged. No global Godot locale or translations are modified. The demo installs its local service's `text()` method; addon-only users do not load any demo code and keep the previous behavior unless they opt in.
+
+The built-in dialogue keeps an immutable copy of the active command. `refresh_translation()` updates its speaker, message and existing choice buttons in place. It does not emit `answered`, recreate buttons, change choice indexes, alter the interpreter generation, or replay commands. The demo restores focus to the previous dialogue option after selecting a language. `MEKMapEvent` redraws translated captions on `presentation_changed` without modifying `display_name`. The HUD re-renders source-message metadata and recent-action records. Logs show at most seven wrapped lines to keep the observer panel bounded.
+
+Run `Godot --headless --path . --script res://tests/demo_languages.gd` for 47 demo-language checks; omit `--headless` to capture all four HUDs and choice dialogues. Checks cover all authored story text, placeholder parity, live dialogue/choice switching, selection indexes, one-time rewards, transfers, autorun, save/load independence, preference reload and resource immutability. Test preferences and saves use `user://map_event_kit_tests` and do not overwrite player files. The report is [demo-language-tests.json](testing/demo-language-tests.json).
 
 ## Verification and reproducible commands
 
@@ -284,4 +296,4 @@ The Alpha has one active event, one player and one built-in dialogue surface. It
 
 Integration work should first resolve the autoload name, controller locking, input ownership, dialogue ownership and save ownership. Export presets must include scenes and audio referred to by string paths; inspect the target export and test transfers and sounds in the exported build. Resource validation in the editor alone does not establish export compatibility.
 
-Potential future work includes runtime story localization, stable IDs independent of scene paths, a versioned resource schema, awaited extension commands and adapters for existing dialogue/save systems. These are design directions, not implemented features.
+Potential future work includes stable translation keys for large story catalogs, stable IDs independent of scene paths, a versioned resource schema, awaited extension commands and adapters for existing dialogue/save systems. These are design directions, not implemented features.

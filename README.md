@@ -2,7 +2,7 @@
 
 RPG Maker style map events for Godot: event pages, conditions, command lists and a playable two-map demo.
 
-**0.1.1-alpha** · **MIT** · Tested with **Godot 4.7.2 Standard / Windows / Compatibility**.
+**0.1.2-alpha** · **MIT** · Tested with **Godot 4.7.2 Standard / Windows / Compatibility**.
 
 [GitHub repository](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)
 
@@ -11,7 +11,7 @@ RPG Maker style map events for Godot: event pages, conditions, command lists and
 - [User manual — English → 日本語 → 한국어 → 中文](docs/USER_MANUAL.md)
 - [Technical documentation — English](docs/TECHNICAL.md)
 
-Open the **Map Events** tab and choose **English / 日本語 / 한국어 / 简体中文** at the top right. The default follows Godot’s editor language, with English as the fallback. Switching updates the editor immediately and preserves pending input and undo history. Your preference is saved locally for this project. Demo story text remains in Chinese; authored event content is never automatically translated.
+Open the **Map Events** tab and choose **English / 日本語 / 한국어 / 简体中文** at the top right. The default follows Godot’s editor language, with English as the fallback. Switching updates the editor immediately and preserves pending input and undo history. Your preference is saved locally for this project. The demo also has its own four-language selector during play, including all built-in dialogue and choices. User-authored text without a catalog entry stays unchanged.
 
 ## Try the demo
 
@@ -20,6 +20,10 @@ Download the repository with **Code → Download ZIP**, extract it and import `p
 Windows users can also run `Launch Demo.cmd` or `Open Editor.cmd` when Godot is discoverable. The engine is not included.
 
 ![Map Event Kit demo](docs/images/demo.png)
+
+In the running demo, use the language selector at the top right. Language changes also update an open dialogue without advancing the event. The preference survives map transfers and restarts, and loading a game does not override it. The demo defaults to the system language, with English as the fallback.
+
+[Demo language checks — 47 passing](docs/testing/demo-language-tests.json) · [English dialogue screenshot](docs/images/demo-choices-en.png) · [日本語](docs/images/demo-choices-ja.png) · [한국어](docs/images/demo-choices-ko.png)
 
 ## Install the addon
 

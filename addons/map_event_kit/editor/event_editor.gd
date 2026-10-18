@@ -52,7 +52,7 @@ func _ready() -> void:
 	name_label.add_theme_font_size_override("font_size", 25)
 	heading.add_child(name_label)
 	var badge := Label.new()
-	badge.text = "   MAP EVENT KIT   /   0.1.1 ALPHA"
+	badge.text = "   MAP EVENT KIT   /   0.1.2 ALPHA"
 	badge.modulate = Color("80d9b6")
 	heading.add_child(badge)
 	var spacer := Control.new()

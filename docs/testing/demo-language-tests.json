@@ -1,0 +1,194 @@
+{
+	"checks": [
+		{
+			"name": "all authored dialogue, speakers and choices have translations",
+			"passed": true
+		},
+		{
+			"name": "demo catalog complete and placeholders preserved",
+			"passed": true
+		},
+		{
+			"name": "en HUD and buttons localized",
+			"passed": true
+		},
+		{
+			"name": "en event captions translated and unknown content preserved",
+			"passed": true
+		},
+		{
+			"name": "en load notice localized",
+			"passed": true
+		},
+		{
+			"name": "ja HUD and buttons localized",
+			"passed": true
+		},
+		{
+			"name": "ja event captions translated and unknown content preserved",
+			"passed": true
+		},
+		{
+			"name": "ja load notice localized",
+			"passed": true
+		},
+		{
+			"name": "ko HUD and buttons localized",
+			"passed": true
+		},
+		{
+			"name": "ko event captions translated and unknown content preserved",
+			"passed": true
+		},
+		{
+			"name": "ko load notice localized",
+			"passed": true
+		},
+		{
+			"name": "zh_CN HUD and buttons localized",
+			"passed": true
+		},
+		{
+			"name": "zh_CN event captions translated and unknown content preserved",
+			"passed": true
+		},
+		{
+			"name": "zh_CN load notice localized",
+			"passed": true
+		},
+		{
+			"name": "en active dialogue switches without advancing",
+			"passed": true
+		},
+		{
+			"name": "ja active dialogue switches without advancing",
+			"passed": true
+		},
+		{
+			"name": "ko active dialogue switches without advancing",
+			"passed": true
+		},
+		{
+			"name": "zh_CN active dialogue switches without advancing",
+			"passed": true
+		},
+		{
+			"name": "en live choices retain identity and focused option",
+			"passed": true
+		},
+		{
+			"name": "ja live choices retain identity and focused option",
+			"passed": true
+		},
+		{
+			"name": "ko live choices retain identity and focused option",
+			"passed": true
+		},
+		{
+			"name": "zh_CN live choices retain identity and focused option",
+			"passed": true
+		},
+		{
+			"name": "translated choice retains branch index",
+			"passed": true
+		},
+		{
+			"name": "en chest reward occurs once",
+			"passed": true
+		},
+		{
+			"name": "en transfer and autorun preserve language",
+			"passed": true
+		},
+		{
+			"name": "en save succeeds",
+			"passed": true
+		},
+		{
+			"name": "en saved progress reloads",
+			"passed": true
+		},
+		{
+			"name": "en loading restores progress without overriding language",
+			"passed": true
+		},
+		{
+			"name": "ja chest reward occurs once",
+			"passed": true
+		},
+		{
+			"name": "ja transfer and autorun preserve language",
+			"passed": true
+		},
+		{
+			"name": "ja save succeeds",
+			"passed": true
+		},
+		{
+			"name": "ja saved progress reloads",
+			"passed": true
+		},
+		{
+			"name": "ja loading restores progress without overriding language",
+			"passed": true
+		},
+		{
+			"name": "ko chest reward occurs once",
+			"passed": true
+		},
+		{
+			"name": "ko transfer and autorun preserve language",
+			"passed": true
+		},
+		{
+			"name": "ko save succeeds",
+			"passed": true
+		},
+		{
+			"name": "ko saved progress reloads",
+			"passed": true
+		},
+		{
+			"name": "ko loading restores progress without overriding language",
+			"passed": true
+		},
+		{
+			"name": "zh_CN chest reward occurs once",
+			"passed": true
+		},
+		{
+			"name": "zh_CN transfer and autorun preserve language",
+			"passed": true
+		},
+		{
+			"name": "zh_CN save succeeds",
+			"passed": true
+		},
+		{
+			"name": "zh_CN saved progress reloads",
+			"passed": true
+		},
+		{
+			"name": "zh_CN loading restores progress without overriding language",
+			"passed": true
+		},
+		{
+			"name": "language preference reloads from disk",
+			"passed": true
+		},
+		{
+			"name": "game save schema remains compatible",
+			"passed": true
+		},
+		{
+			"name": "translation never mutates authored event resources",
+			"passed": true
+		},
+		{
+			"name": "addon without translation adapter retains original behavior",
+			"passed": true
+		}
+	],
+	"engine": "4.7.2-stable (official)",
+	"failed": 0
+}

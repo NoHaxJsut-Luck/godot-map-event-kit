@@ -37,6 +37,7 @@ func _ready() -> void:
 			other.valid_identity = false
 			runtime.event_error.emit("同一场景内 event_id 重复：" + event_id)
 	runtime.state_changed.connect(_refresh)
+	runtime.presentation_changed.connect(queue_redraw)
 	_refresh()
 
 func _exit_tree() -> void:
@@ -111,8 +112,10 @@ func _draw() -> void:
 			draw_rect(Rect2(-3, -8, 6, 30), Color("8b7450"))
 			draw_rect(Rect2(-24, -29, 48, 28), marker_color.darkened(0.3))
 	var font := ThemeDB.fallback_font
-	var width := font.get_string_size(display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x
-	draw_string(font, Vector2(-width / 2, 44), display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("e1ece4"))
+	var caption := display_name
+	if not Engine.is_editor_hint() and is_instance_valid(runtime): caption = runtime.translate_text(display_name)
+	var width := font.get_string_size(caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 15).x
+	draw_string(font, Vector2(-width / 2, 44), caption, HORIZONTAL_ALIGNMENT_LEFT, -1, 15, Color("e1ece4"))
 
 func draw_ellipse_shadow() -> void:
 	draw_set_transform(Vector2(0, 19), 0, Vector2(1, 0.35))

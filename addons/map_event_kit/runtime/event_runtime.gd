@@ -5,6 +5,7 @@ signal busy_changed(value: bool)
 signal trace(event_key: String, index: int, command: Dictionary)
 signal event_error(message: String)
 signal custom_command(command_name: String, argument: String, event_key: String)
+signal presentation_changed
 
 const Dialogue = preload("res://addons/map_event_kit/runtime/dialogue.gd")
 const Data = preload("res://addons/map_event_kit/core/event_data.gd")
@@ -19,6 +20,16 @@ var pending_spawn := ""
 var pending_position: Variant = null
 var auto_answer := -1 # Only used by the headless integration harness.
 var save_path := "user://map_event_kit/save_01.json"
+var text_translator := Callable()
+
+func translate_text(source: String) -> String:
+	return str(text_translator.call(source)) if text_translator.is_valid() else source
+
+func set_text_translator(translator: Callable) -> void:
+	text_translator = translator
+	if dialogue:
+		dialogue.refresh_translation()
+	presentation_changed.emit()
 
 func _ready() -> void:
 	dialogue = Dialogue.new()

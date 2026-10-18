@@ -6,8 +6,11 @@ var speaker: Label
 var message: Label
 var buttons: HBoxContainer
 var active := false
+var active_command: Dictionary = {}
+var focused_choice := 0
 
 func _ready() -> void:
+	auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	layer = 90
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -48,8 +51,8 @@ func _ready() -> void:
 
 func ask(command: Dictionary) -> int:
 	active = true
-	speaker.text = str(command.get("speaker", "事件"))
-	message.text = str(command.get("text", ""))
+	active_command = command.duplicate(true)
+	focused_choice = 0
 	for child in buttons.get_children():
 		buttons.remove_child(child)
 		child.queue_free()
@@ -59,13 +62,23 @@ func ask(command: Dictionary) -> int:
 		button.text = str(options[i])
 		button.custom_minimum_size = Vector2(140, 42)
 		button.pressed.connect(_answer.bind(i))
+		button.focus_entered.connect(func(): focused_choice = i)
 		buttons.add_child(button)
+	refresh_translation()
 	panel.show()
 	buttons.get_child(0).grab_focus.call_deferred()
 	var result: int = await answered
 	active = false
 	panel.hide()
 	return result
+
+func refresh_translation() -> void:
+	if not active: return
+	speaker.text = get_parent().translate_text(str(active_command.get("speaker", "事件")))
+	message.text = get_parent().translate_text(str(active_command.get("text", "")))
+	var options: Array = active_command.get("options", ["继续  ↵"])
+	for i in range(buttons.get_child_count()):
+		buttons.get_child(i).text = get_parent().translate_text(str(options[i]))
 
 func _answer(value: int) -> void:
 	if not active: return

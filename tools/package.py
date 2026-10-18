@@ -10,8 +10,8 @@ def source_files(folder):
     return [p for p in (root/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix != '.pyc']
 
 for name, folders, extras in [
-    ('map-event-kit-0.1.1-alpha-addon.zip',['addons','docs'],['README.md','LICENSE','CHANGELOG.md']),
-    ('map-event-kit-0.1.1-alpha-demo.zip',['addons','docs','demo','tests','tools'],['project.godot','README.md','LICENSE','CHANGELOG.md','Launch Demo.cmd','Open Editor.cmd','.gitignore']),
+    ('map-event-kit-0.1.2-alpha-addon.zip',['addons','docs'],['README.md','LICENSE','CHANGELOG.md']),
+    ('map-event-kit-0.1.2-alpha-demo.zip',['addons','docs','demo','tests','tools'],['project.godot','README.md','LICENSE','CHANGELOG.md','Launch Demo.cmd','Open Editor.cmd','.gitignore']),
 ]:
     with ZipFile(dist/name, 'w', ZIP_DEFLATED) as z:
         for folder in folders:

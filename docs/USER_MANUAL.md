@@ -1,6 +1,6 @@
 # Map Event Kit User Manual
 
-Version **0.1.1-alpha** · 2026-10-18 · [GitHub source](https://github.com/NoHaxJsut-Luck/godot-map-event-kit) · [Technical documentation](TECHNICAL.md)
+Version **0.1.2-alpha** · 2026-10-18 · [GitHub source](https://github.com/NoHaxJsut-Luck/godot-map-event-kit) · [Technical documentation](TECHNICAL.md)
 
 [English](#english) · [日本語](#日本語) · [한국어](#한국어) · [中文](#中文)
 
@@ -10,7 +10,7 @@ Version **0.1.1-alpha** · 2026-10-18 · [GitHub source](https://github.com/NoHa
 
 Map Event Kit adds RPG Maker style event pages and command lists to Godot. Use it for NPC conversations, treasure chests, switches and map transfers. This manual covers installation and everyday editing.
 
-Use **Godot 4.7.2 Standard**, with the Compatibility renderer, for the tested setup. Windows is the tested platform; other Godot 4 versions and platforms are unverified. Godot 3 is unsupported. **The plugin editor supports English, Japanese, Korean and Simplified Chinese.** Open **Map Events** and choose a language from the top-right selector. **Follow Godot** uses the editor language, falling back to English for unsupported languages. Changes take effect immediately and are remembered locally for this project. Pending form input and undo/redo history are preserved. Godot’s own menus and file-dialog controls follow Godot’s settings. The demo story remains Chinese. Existing event names, dialogue, keys and paths are not translated. The Chinese labels below remain a reference for the Simplified Chinese setting.
+Use **Godot 4.7.2 Standard**, with the Compatibility renderer, for the tested setup. Windows is the tested platform; other Godot 4 versions and platforms are unverified. Godot 3 is unsupported. **The plugin editor supports English, Japanese, Korean and Simplified Chinese.** Open **Map Events** and choose a language from the top-right selector. **Follow Godot** uses the editor language, falling back to English for unsupported languages. Changes take effect immediately and are remembered locally for this project. Pending form input and undo/redo history are preserved. Godot’s own menus and file-dialog controls follow Godot’s settings. The demo now has a separate language selector at the top right during play. It translates its built-in HUD, object names, dialogue and choices, even while a dialogue is open. The setting survives transfers and restarts, and loading a save keeps your current language. It defaults to the system language, with English as the fallback. Event resource text, keys and paths remain unchanged on disk; new user-written dialogue needs its own translation entries. The Chinese labels below remain a reference for the Simplified Chinese setting.
 
 Download the repository using **Code → Download ZIP**, extract it, and import `project.godot` in Godot. Press **F5**. On Windows, the supplied `Launch Demo.cmd` and `Open Editor.cmd` also work when Godot is discoverable; otherwise use Godot's project manager. The engine is not included.
 
@@ -140,7 +140,7 @@ This Alpha provides map events. It does not include battles, an inventory databa
 
 Map Event Kit は、RPG Maker 風のイベントページとコマンドリストを Godot に追加するプラグインです。NPC との会話、宝箱、スイッチ、マップ移動を作れます。
 
-動作確認済みの環境は **Windows、Godot 4.7.2 Standard、Compatibility レンダラー**です。ほかの Godot 4 バージョンと OS は未検証で、Godot 3 には対応していません。**プラグインのエディターは英語・日本語・韓国語・簡体字中国語に対応しています。** **Map Events** タブ右上の言語選択から **日本語** を選んでください。「Godot に合わせる」は Godot の言語を使用し、未対応の言語では英語になります。変更は即座に反映され、プロジェクトごとにローカル保存されます。未適用の入力や元に戻す・やり直しの履歴は保持されます。Godot 本体のメニューとファイルダイアログは Godot の設定に従います。デモの物語、既存イベント名、会話、キーやパスは翻訳されません。以下の中国語ラベルは簡体字中国語を選んだ場合の参照用です。
+動作確認済みの環境は **Windows、Godot 4.7.2 Standard、Compatibility レンダラー**です。ほかの Godot 4 バージョンと OS は未検証で、Godot 3 には対応していません。**プラグインのエディターは英語・日本語・韓国語・簡体字中国語に対応しています。** **Map Events** タブ右上の言語選択から **日本語** を選んでください。「Godot に合わせる」は Godot の言語を使用し、未対応の言語では英語になります。変更は即座に反映され、プロジェクトごとにローカル保存されます。未適用の入力や元に戻す・やり直しの履歴は保持されます。Godot 本体のメニューとファイルダイアログは Godot の設定に従います。実行中のデモにも右上に言語選択があります。画面表示、オブジェクト名、内蔵の会話と選択肢を翻訳し、会話の途中でも切り替えられます。設定はマップ移動や再起動後も保持され、ロードしても現在の言語は変わりません。初期設定はシステム言語で、未対応の場合は英語です。リソースに保存された原文・キー・パスは変更せず、自作の会話には翻訳の追加が必要です。以下の中国語ラベルは簡体字中国語を選んだ場合の参照用です。
 
 [GitHub](https://github.com/NoHaxJsut-Luck/godot-map-event-kit) の **Code → Download ZIP** から取得して展開し、Godot で `project.godot` をインポートして **F5** を押します。Windows 用の `Launch Demo.cmd` と `Open Editor.cmd` は Godot が検出できる環境で利用できます。検出できない場合は Godot のプロジェクトマネージャーを使ってください。エンジンは同梱していません。
 
@@ -270,7 +270,7 @@ func _physics_process(delta: float) -> void:
 
 Map Event Kit는 Godot에 RPG Maker 방식의 이벤트 페이지와 명령 목록을 추가하는 플러그인입니다. NPC 대화, 보물 상자, 스위치, 맵 이동을 만들 수 있습니다.
 
-검증 환경은 **Windows, Godot 4.7.2 Standard, Compatibility 렌더러**입니다. 다른 Godot 4 버전과 운영체제는 미검증이며 Godot 3은 지원하지 않습니다. **플러그인 편집기는 영어, 일본어, 한국어, 중국어 간체를 지원합니다.** **Map Events** 탭 오른쪽 위에서 **한국어**를 선택하세요. "Godot 설정 따르기"는 Godot 편집기 언어를 사용하며 미지원 언어는 영어로 표시합니다. 변경은 즉시 적용되고 프로젝트별로 로컬에 저장됩니다. 아직 적용하지 않은 입력과 실행 취소/다시 실행 기록은 유지됩니다. Godot 자체 메뉴와 파일 대화상자는 Godot 설정을 따릅니다. 데모 이야기, 기존 이벤트 이름, 대사, 키, 경로는 번역하지 않습니다. 아래 중국어 라벨은 중국어 간체 설정의 참고용입니다.
+검증 환경은 **Windows, Godot 4.7.2 Standard, Compatibility 렌더러**입니다. 다른 Godot 4 버전과 운영체제는 미검증이며 Godot 3은 지원하지 않습니다. **플러그인 편집기는 영어, 일본어, 한국어, 중국어 간체를 지원합니다.** **Map Events** 탭 오른쪽 위에서 **한국어**를 선택하세요. "Godot 설정 따르기"는 Godot 편집기 언어를 사용하며 미지원 언어는 영어로 표시합니다. 변경은 즉시 적용되고 프로젝트별로 로컬에 저장됩니다. 아직 적용하지 않은 입력과 실행 취소/다시 실행 기록은 유지됩니다. Godot 자체 메뉴와 파일 대화상자는 Godot 설정을 따릅니다. 실행 중인 데모의 오른쪽 위에서도 언어를 선택할 수 있습니다. 화면, 오브젝트 이름, 기본 대사와 선택지가 번역되며 대화 중에도 전환할 수 있습니다. 맵 이동과 재시작 후에도 설정이 유지되고 저장 파일을 불러와도 현재 언어는 바뀌지 않습니다. 기본값은 시스템 언어이며 미지원 언어는 영어로 표시합니다. 리소스에 저장된 원문, 키, 경로는 바꾸지 않으며 직접 작성한 대사에는 번역을 추가해야 합니다. 아래 중국어 라벨은 중국어 간체 설정의 참고용입니다.
 
 [GitHub](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)에서 **Code → Download ZIP**으로 내려받아 압축을 풉니다. Godot에서 `project.godot`를 가져온 뒤 **F5**를 누릅니다. Windows의 `Launch Demo.cmd`와 `Open Editor.cmd`는 Godot을 찾을 수 있을 때 사용할 수 있습니다. 찾지 못하면 Godot 프로젝트 관리자를 이용하세요. 엔진은 포함되어 있지 않습니다.
 
@@ -400,7 +400,7 @@ func _physics_process(delta: float) -> void:
 
 Map Event Kit 为 Godot 提供 RPG Maker 风格的事件页和指令列表，可用来制作 NPC 对话、宝箱、开关和地图传送。本手册直接介绍安装与操作。
 
-已验证环境是 **Windows、Godot 4.7.2 标准版、Compatibility 渲染器**。其他 Godot 4 版本和系统尚未验证，不支持 Godot 3。**插件编辑器支持英语、日语、韩语和简体中文。** 打开 **Map Events** 页签，在右上角选择语言即可立即切换；默认“跟随 Godot”，遇到不支持的语言时使用英语。语言偏好会按项目在本机保存，未应用的表单输入和撤销/重做记录都会保留。Godot 自身菜单和文件对话框的通用按钮仍跟随 Godot 设置。演示剧情仍为中文，已有事件名称、对话、键名和路径不会被自动翻译。
+已验证环境是 **Windows、Godot 4.7.2 标准版、Compatibility 渲染器**。其他 Godot 4 版本和系统尚未验证，不支持 Godot 3。**插件编辑器支持英语、日语、韩语和简体中文。** 打开 **Map Events** 页签，在右上角选择语言即可立即切换；默认“跟随 Godot”，遇到不支持的语言时使用英语。语言偏好会按项目在本机保存，未应用的表单输入和撤销/重做记录都会保留。Godot 自身菜单和文件对话框的通用按钮仍跟随 Godot 设置。运行 Demo 后，右上角也有独立的语言菜单，覆盖界面、物体名称、全部内置对白和选项；对话中途也能切换。选择会在跨地图和重启后保留，读取进度不会覆盖当前语言。默认跟随系统，不支持的系统语言使用英语。资源文件中的原文、键名和路径保持不变；自行添加的剧情需要补充对应翻译。
 
 在 [GitHub](https://github.com/NoHaxJsut-Luck/godot-map-event-kit) 点击 **Code → Download ZIP**，解压后用 Godot 导入 `project.godot`，按 **F5** 运行。Windows 用户也可使用 `Launch Demo.cmd` 和 `Open Editor.cmd`；如果脚本找不到 Godot，改用引擎的项目管理器打开。压缩包不包含引擎。
 
