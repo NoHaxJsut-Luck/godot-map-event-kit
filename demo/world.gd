@@ -57,13 +57,13 @@ func build_ui() -> void:
 	add_label(root, "MAP EVENT KIT", Vector2(40, 23), 15, Color("7cd7b5"))
 	add_label(root, "地图事件工坊", Vector2(40, 48), 32, Color("f0f4ed"))
 	add_label(root, "一个宝箱，一把钥匙，一段由你编排的冒险。", Vector2(42, 96), 17, Color("9caeb8"))
-	add_label(root, "0.1.2 / ALPHA", Vector2(1105, 23), 16, Color("d8bc86"))
+	add_label(root, "0.1.3 / ALPHA", Vector2(1105, 23), 16, Color("d8bc86"))
 	var language_bar := HBoxContainer.new()
 	language_bar.position = Vector2(954, 72)
 	language_bar.size.x = 286
 	root.add_child(language_bar)
 	var language_label := Label.new()
-	set_ui_text(language_label, "语言")
+	language_label.text = "Language"
 	language_bar.add_child(language_label)
 	language_picker = OptionButton.new()
 	language_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -236,7 +236,7 @@ func _translate_ui(node: Node) -> void:
 
 func _language_changed() -> void:
 	_translate_ui(ui_root)
-	language_picker.set_item_text(0, _t("跟随系统"))
+	language_picker.set_item_text(0, "System / Auto")
 	language_picker.select(DemoLocale.LANGUAGES.find(locale_service.choice))
 	update_state()
 	_update_log()

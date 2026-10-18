@@ -1,6 +1,10 @@
 {
 	"checks": [
 		{
+			"name": "fresh launch defaults to English independently of system language",
+			"passed": true
+		},
+		{
 			"name": "all authored dialogue, speakers and choices have translations",
 			"passed": true
 		},

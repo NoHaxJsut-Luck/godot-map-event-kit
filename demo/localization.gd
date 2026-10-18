@@ -52,7 +52,7 @@ const MESSAGES := {
 }
 const EVENT_NAMES := {"guide_01":"守门人", "chest_01":"旧宝箱", "gate_01":"遗迹门", "sign_01":"路牌", "return_01":"返回小院", "arrival_01":"回响石碑"}
 const OPS := {"text":"显示文字", "choices":"显示选项", "set_switch":"设置全局开关", "set_self_switch":"设置独立开关", "set_variable":"设置变量", "add_variable":"增加变量", "if_switch":"条件：全局开关", "if_self_switch":"条件：独立开关", "if_variable":"条件：变量", "else":"否则", "end":"结束分支", "wait":"等待", "transfer":"切换地图", "sound":"播放音效", "custom":"自定义指令", "stop":"结束事件"}
-var choice := "auto"
+var choice := "en"
 var language := "en"
 var settings_path := "user://map_event_kit/demo_settings.cfg"
 
@@ -64,12 +64,12 @@ func _ready() -> void:
 
 func load_preference() -> void:
 	var config := ConfigFile.new()
-	var saved := "auto"
-	if config.load(settings_path) == OK: saved = str(config.get_value("demo", "language", "auto"))
+	var saved := "en"
+	if config.load(settings_path) == OK: saved = str(config.get_value("demo", "language", "en"))
 	set_language(saved, false)
 
 func set_language(value: String, persist := true) -> Error:
-	choice = value if value in LANGUAGES else "auto"
+	choice = value if value in LANGUAGES else "en"
 	language = CoreI18n.resolve(OS.get_locale_language() if choice == "auto" else choice)
 	get_parent().set_text_translator(text)
 	changed.emit()

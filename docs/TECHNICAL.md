@@ -1,6 +1,6 @@
 # Map Event Kit Technical Documentation
 
-Version **0.1.2-alpha** · 2026-10-18
+Version **0.1.3-alpha** · 2026-10-18
 
 Repository: [NoHaxJsut-Luck/godot-map-event-kit](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)
 
@@ -244,13 +244,13 @@ Editor regression checks exercise all four languages through the picker signal, 
 
 `demo/localization.gd` is instantiated once as `DemoLocale`, a child of the persistent `MapEvents` autoload, by the demo world. It survives map changes. Its catalog translates original Chinese source strings into English, Japanese and Korean, reusing the core catalog for shared labels. Chinese is the original source; unknown strings pass through unchanged. Source-text lookup means edited or newly authored story text needs matching catalog entries. Event resources, operation IDs and choice order are never rewritten.
 
-The demo selector offers System language, English, Japanese, Korean and Simplified Chinese. The default resolves `OS.get_locale_language()` and falls back to English. Preferences are stored in `user://map_event_kit/demo_settings.cfg`, separately from progress and editor metadata. Game-save version 1 remains unchanged; loading or resetting progress does not replace the language. Preference-write failures appear in the notice area. `--demo-language=en` (also `ja`, `ko`, `zh_CN`, `auto`) overrides the initial choice without saving it, useful for previews.
+The demo selector offers System language, English, Japanese, Korean and Simplified Chinese. The first-launch and invalid-preference default is English. The selector caption is always `Language`, and its choices retain native names. Only the optional `auto` choice resolves `OS.get_locale_language()`, falling back to English for unsupported system languages. Valid saved preferences remain authoritative. Preferences are stored in `user://map_event_kit/demo_settings.cfg`, separately from progress and editor metadata. Game-save version 1 remains unchanged; loading or resetting progress does not replace the language. Preference-write failures appear in the notice area. `--demo-language=en` (also `ja`, `ko`, `zh_CN`, `auto`) overrides the initial choice without saving it, useful for previews.
 
 The runtime exposes `set_text_translator(translator: Callable)` and `translate_text(source: String) -> String`, plus `presentation_changed`. An empty or invalid callable returns the source unchanged. No global Godot locale or translations are modified. The demo installs its local service's `text()` method; addon-only users do not load any demo code and keep the previous behavior unless they opt in.
 
 The built-in dialogue keeps an immutable copy of the active command. `refresh_translation()` updates its speaker, message and existing choice buttons in place. It does not emit `answered`, recreate buttons, change choice indexes, alter the interpreter generation, or replay commands. The demo restores focus to the previous dialogue option after selecting a language. `MEKMapEvent` redraws translated captions on `presentation_changed` without modifying `display_name`. The HUD re-renders source-message metadata and recent-action records. Logs show at most seven wrapped lines to keep the observer panel bounded.
 
-Run `Godot --headless --path . --script res://tests/demo_languages.gd` for 47 demo-language checks; omit `--headless` to capture all four HUDs and choice dialogues. Checks cover all authored story text, placeholder parity, live dialogue/choice switching, selection indexes, one-time rewards, transfers, autorun, save/load independence, preference reload and resource immutability. Test preferences and saves use `user://map_event_kit_tests` and do not overwrite player files. The report is [demo-language-tests.json](testing/demo-language-tests.json).
+Run `Godot --headless --path . --script res://tests/demo_languages.gd` for 48 demo-language checks; omit `--headless` to capture all four HUDs and choice dialogues. Checks cover all authored story text, placeholder parity, live dialogue/choice switching, selection indexes, one-time rewards, transfers, autorun, save/load independence, preference reload and resource immutability. Test preferences and saves use `user://map_event_kit_tests` and do not overwrite player files. The report is [demo-language-tests.json](testing/demo-language-tests.json).
 
 ## Verification and reproducible commands
 

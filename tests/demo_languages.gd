@@ -44,6 +44,11 @@ func run() -> void:
 	locale_service = runtime.get_node("DemoLocale")
 	# Never overwrite the player's language preference or progress in this harness.
 	locale_service.settings_path = "user://map_event_kit_tests/demo_language.cfg"
+	var test_settings_path: String = locale_service.settings_path
+	locale_service.settings_path += ".fresh-" + str(OS.get_process_id())
+	locale_service.load_preference()
+	check(locale_service.choice == "en" and locale_service.language == "en" and current_scene.language_picker.get_item_text(current_scene.language_picker.selected) == "English", "fresh launch defaults to English independently of system language")
+	locale_service.settings_path = test_settings_path
 	var originals: Dictionary = {}
 	var coverage := true
 	for asset in ["chest", "guide", "gate", "return", "arrival", "sign"]:

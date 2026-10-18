@@ -2,7 +2,7 @@
 
 RPG Maker style map events for Godot: event pages, conditions, command lists and a playable two-map demo.
 
-**0.1.2-alpha** · **MIT** · Tested with **Godot 4.7.2 Standard / Windows / Compatibility**.
+**0.1.3-alpha** · **MIT** · Tested with **Godot 4.7.2 Standard / Windows / Compatibility**.
 
 [GitHub repository](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)
 
@@ -21,9 +21,9 @@ Windows users can also run `Launch Demo.cmd` or `Open Editor.cmd` when Godot is 
 
 ![Map Event Kit demo](docs/images/demo.png)
 
-In the running demo, use the language selector at the top right. Language changes also update an open dialogue without advancing the event. The preference survives map transfers and restarts, and loading a game does not override it. The demo defaults to the system language, with English as the fallback.
+In the running demo, use the language selector at the top right. Language changes also update an open dialogue without advancing the event. The preference survives map transfers and restarts, and loading a game does not override it. The demo starts in English on first launch. Its selector is always labelled **Language**, with each language shown in its native script. Previously saved choices are preserved; System / Auto is optional.
 
-[Demo language checks — 47 passing](docs/testing/demo-language-tests.json) · [English dialogue screenshot](docs/images/demo-choices-en.png) · [日本語](docs/images/demo-choices-ja.png) · [한국어](docs/images/demo-choices-ko.png)
+[Demo language checks — 48 passing](docs/testing/demo-language-tests.json) · [English dialogue screenshot](docs/images/demo-choices-en.png) · [日本語](docs/images/demo-choices-ja.png) · [한국어](docs/images/demo-choices-ko.png)
 
 ## Install the addon
 
