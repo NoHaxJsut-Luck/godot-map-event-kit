@@ -1,6 +1,6 @@
 # Map Event Kit Technical Documentation
 
-Version **0.1.0-alpha** · 2026-10-17
+Version **0.1.1-alpha** · 2026-10-18
 
 Repository: [NoHaxJsut-Luck/godot-map-event-kit](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)
 
@@ -10,7 +10,7 @@ Repository: [NoHaxJsut-Luck/godot-map-event-kit](https://github.com/NoHaxJsut-Lu
 
 Map Event Kit implements a Godot editor for event pages and a small sequential interpreter for map interactions. A scene node supplies identity and triggering; a resource supplies conditions and commands; an autoload holds state across scene changes. It is intended for conversations, chests, gates and scene transitions.
 
-The tested configuration is **Godot 4.7.2 Standard on Windows with the Compatibility renderer**. Runtime checks, editor checks and a fresh addon installation have passed. These results do not establish compatibility with arbitrary existing projects, other engine versions or exported builds. The editor and demo currently use Chinese text. The user manual is multilingual; interface localization has not been implemented.
+The tested configuration is **Godot 4.7.2 Standard on Windows with the Compatibility renderer**. Runtime checks, editor checks and a fresh addon installation have passed. These results do not establish compatibility with arbitrary existing projects, other engine versions or exported builds. The editor interface and manual support English, Japanese, Korean and Simplified Chinese. Authored demo story text remains Chinese.
 
 ## Source layout
 
@@ -89,7 +89,7 @@ Validation runs from the editor and before event execution. It validates the who
 
 ## Form editing and undo history
 
-The editor uses three columns: page list and page settings, command list, and command parameters. The command picker maps a stable operation identifier to a Chinese display label. Forms are constructed according to the selected operation.
+The editor uses three columns: page list and page settings, command list, and command parameters. The command picker maps a stable operation identifier to a localized display label. Forms are constructed according to the selected operation.
 
 Typing changes a form control only. Apply collects its values, deep-copies the page array and commits the new data through `EditorUndoRedoManager`. Each action stores both the previous and next property values and calls `_changed()` on redo and undo. The resource is the custom history context, so edits belong to its history.
 
@@ -228,9 +228,21 @@ The default `save_path` is `user://map_event_kit/save_01.json`. Change it for pr
 
 Only plugin state, scene and global player position are saved. Inventory, arbitrary nodes, active command position and unrelated game state are not included. There is no save migration, automatic backup recovery or mid-dialogue resume. Stable scene paths and event IDs are part of save compatibility.
 
+## Editor localization
+
+`core/localization.gd` owns the message catalog. Chinese source messages map to English, Japanese and Korean strings; format placeholders are preserved. `resolve()` normalizes regional tags (for example `ja_JP` and `ko-KR`), maps Chinese variants to Simplified Chinese, and falls back to English for unsupported locales. Unknown message keys are returned unchanged. `python tools/check_translations.py` checks UI/validator coverage, duplicates and placeholder parity.
+
+The panel's `language_choice` is `auto`, `en`, `ja`, `ko` or `zh_CN`. The `auto` choice reads Godot's `interface/editor/editor_language`; the panel listens for editor settings changes. `EditorSettings.set_project_metadata()` stores the choice under `map_event_kit/editor_language`. It is local editor metadata, not a shared project or game-save setting. The main-screen tab remains **Map Events** so Godot can reliably activate it across language changes. Engine-owned menus and file-dialog controls retain the engine's language.
+
+Labels and dropdown display strings carry source-message metadata. `_apply_language()` updates those nodes in place, leaving form controls, selection, user text, option metadata, resource data and undo history intact. It refreshes command summaries and diagnostics without rebuilding the forms. The addon does not call `TranslationServer.set_locale()` or register global translations, and disables automatic translation on its panel to prevent the host game's catalog from rewriting authored content.
+
+`MEKEventData.validate(data, locale)` produces localized page/command prefixes and error messages. The optional locale defaults to `zh_CN` to preserve runtime behavior for existing callers. `default_page(locale)` and `default_command(op, locale)` localize starter text only when a new resource or command is created. Existing dialogue, page names, command identifiers, keys and paths are never translated. The demo's story and runtime dialogue are outside this editor-language feature.
+
+Editor regression checks exercise all four languages through the picker signal, pending text/number/boolean and choice inputs, resource immutability, validation messages, preference persistence on panel recreation, regional fallback, and undo/redo across language switches. Screenshots can be generated using the non-headless editor harness; these do not establish compatibility with other platforms.
+
 ## Verification and reproducible commands
 
-The checked-in [runtime report](testing/runtime-tests.json) contains **30 passing checks**, and the [editor report](testing/editor-tests.json) contains **13 passing checks**, both with zero failures. They are snapshots of local verification, not a hosted CI service or a compatibility guarantee.
+The checked-in [runtime report](testing/runtime-tests.json) contains **30 passing checks**, and the [editor report](testing/editor-tests.json) contains **50 passing checks**, both with zero failures. They are snapshots of local verification, not a hosted CI service or a compatibility guarantee.
 
 Runtime coverage includes all demo resource validation, E-key interaction, choices, nested branch suppression, one-time rewards, self-switch isolation, busy save rejection, cancellation during waits/dialogue, duplicate IDs, scene transfer, autorun, save replacement, position restoration, corrupt saves and resource serialization. Editor coverage includes autoload paths and UIDs, rendering the lists, Apply, undo/redo, command duplication/deletion, page creation/reordering/deletion and Save As/reload.
 
@@ -264,7 +276,7 @@ Run `python tools/package.py` with Python 3 to create addon-only and full-demo Z
 
 `tools/build_demo.py` regenerates authored demo resources and audio and overwrites those files; do not run it as an installation step. Windows launchers locate a nearby development engine, then `GODOT_BIN`, then `godot` or `godot4` on PATH. On other platforms, import `project.godot` directly; those platforms remain unverified.
 
-The repository and bundled demonstration assets are distributed under the existing MIT license. GitHub source availability does not imply an itch.io release or Godot Asset Library listing.
+The repository and bundled demonstration assets are distributed under the existing MIT license. The project has an [itch.io page](https://nohaxjsut-luck.itch.io/godot-map-event-kit). No Godot Asset Library listing is claimed.
 
 ## Current boundaries
 
@@ -272,4 +284,4 @@ The Alpha has one active event, one player and one built-in dialogue surface. It
 
 Integration work should first resolve the autoload name, controller locking, input ownership, dialogue ownership and save ownership. Export presets must include scenes and audio referred to by string paths; inspect the target export and test transfers and sounds in the exported build. Resource validation in the editor alone does not establish export compatibility.
 
-Potential future work includes localized interface strings, stable IDs independent of scene paths, a versioned resource schema, awaited extension commands and adapters for existing dialogue/save systems. These are design directions, not implemented features.
+Potential future work includes runtime story localization, stable IDs independent of scene paths, a versioned resource schema, awaited extension commands and adapters for existing dialogue/save systems. These are design directions, not implemented features.

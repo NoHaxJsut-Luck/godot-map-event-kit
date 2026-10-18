@@ -1,6 +1,7 @@
 @tool
 extends VBoxContainer
 
+const I18n = preload("res://addons/map_event_kit/core/localization.gd")
 const Data = preload("res://addons/map_event_kit/core/event_data.gd")
 const OPS := ["text", "choices", "set_switch", "set_self_switch", "set_variable", "add_variable", "if_switch", "if_self_switch", "if_variable", "else", "end", "wait", "transfer", "sound", "custom", "stop"]
 const LABELS := ["显示文字", "显示选项", "设置全局开关", "设置独立开关", "设置变量", "增加变量", "条件：全局开关", "条件：独立开关", "条件：变量", "否则", "结束分支", "等待", "切换地图", "播放音效", "自定义指令", "结束事件"]
@@ -27,20 +28,45 @@ var open_dialog: EditorFileDialog
 var save_dialog: EditorFileDialog
 var title_field: LineEdit
 var last_diagnostic := ""
+var language_choice := "auto"
+var language := "en"
+var language_picker: OptionButton
+var status_source := ""
+var status_args: Array = []
+var showing_validation := false
+var command_heading: Label
+
 
 func _ready() -> void:
+	auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	var settings := plugin.get_editor_interface().get_editor_settings()
+	language_choice = str(settings.get_project_metadata("map_event_kit", "editor_language", "auto"))
+	if language_choice not in I18n.LANGUAGES: language_choice = "auto"
+	language = _resolved_language()
+	settings.settings_changed.connect(_editor_settings_changed)
 	add_theme_constant_override("separation", 12)
 	var heading := HBoxContainer.new()
 	add_child(heading)
 	var name_label := Label.new()
-	name_label.text = "地图事件工坊"
+	_set_text(name_label, "地图事件工坊")
 	name_label.add_theme_font_size_override("font_size", 25)
 	heading.add_child(name_label)
 	var badge := Label.new()
-	badge.text = "   MAP EVENT KIT   /   0.1 ALPHA"
+	badge.text = "   MAP EVENT KIT   /   0.1.1 ALPHA"
 	badge.modulate = Color("80d9b6")
 	heading.add_child(badge)
-	var toolbar := HBoxContainer.new()
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	heading.add_child(spacer)
+	var language_label := label(heading, "语言")
+	language_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	language_picker = OptionButton.new()
+	for language_name in I18n.NAMES: language_picker.add_item(language_name)
+	language_picker.set_item_text(0, _t("跟随 Godot"))
+	language_picker.select(I18n.LANGUAGES.find(language_choice))
+	language_picker.item_selected.connect(func(index): set_language(I18n.LANGUAGES[index]))
+	heading.add_child(language_picker)
+	var toolbar := HFlowContainer.new()
 	add_child(toolbar)
 	button(toolbar, "新建事件", _new)
 	button(toolbar, "打开事件…", func(): open_dialog.popup_centered_ratio(0.65))
@@ -51,18 +77,20 @@ func _ready() -> void:
 	button(toolbar, "检查事件", _validate)
 	if ResourceLoader.exists("res://demo/events/chest.tres"):
 		var samples := MenuButton.new()
-		samples.text = "演示事件 ▾"
+		_set_text(samples, "演示事件 ▾")
 		toolbar.add_child(samples)
-		for label in ["宝箱 · 两页与独立开关", "守门人 · 选项与分支", "遗迹门 · 钥匙与传送", "返回门 · 跨地图"]: samples.get_popup().add_item(label)
+		var sample_labels := ["宝箱 · 两页与独立开关", "守门人 · 选项与分支", "遗迹门 · 钥匙与传送", "返回门 · 跨地图"]
+		samples.get_popup().set_meta("mek_labels", sample_labels)
+		for source in sample_labels: samples.get_popup().add_item(_t(source))
 		samples.get_popup().id_pressed.connect(func(id): _open("res://demo/events/" + ["chest", "guide", "gate", "return"][id] + ".tres"))
 	location = Label.new()
-	location.text = "打开一个事件资源，或在 2D 场景中选择 MEKMapEvent 节点。"
+	_update_location()
 	location.modulate = Color("9baeb8")
 	add_child(location)
 	var title_row := HBoxContainer.new()
 	add_child(title_row)
 	var title_label := Label.new()
-	title_label.text = "事件名称"
+	_set_text(title_label, "事件名称")
 	title_row.add_child(title_label)
 	title_field = LineEdit.new()
 	title_field.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -104,7 +132,8 @@ func _ready() -> void:
 	var add_bar := HBoxContainer.new()
 	center.add_child(add_bar)
 	command_picker = OptionButton.new()
-	for text in LABELS: command_picker.add_item(text)
+	command_picker.set_meta("mek_labels", LABELS)
+	for text in LABELS: command_picker.add_item(_t(text))
 	command_picker.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_bar.add_child(command_picker)
 	button(add_bar, "+ 插入", _add_command)
@@ -112,7 +141,7 @@ func _ready() -> void:
 	commands_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	center.add_child(commands_list)
 	commands_list.item_selected.connect(func(index): command_index = index; _command_form())
-	var command_buttons := HBoxContainer.new()
+	var command_buttons := HFlowContainer.new()
 	center.add_child(command_buttons)
 	button(command_buttons, "复制指令", _duplicate_command)
 	button(command_buttons, "删除", _delete_command)
@@ -134,26 +163,26 @@ func _ready() -> void:
 	add_child(status)
 	open_dialog = EditorFileDialog.new()
 	open_dialog.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILE
-	open_dialog.add_filter("*.tres", "事件资源")
+	open_dialog.add_filter("*.tres", _t("事件资源"))
 	open_dialog.file_selected.connect(_open)
 	add_child(open_dialog)
 	save_dialog = EditorFileDialog.new()
 	save_dialog.file_mode = EditorFileDialog.FILE_MODE_SAVE_FILE
-	save_dialog.add_filter("*.tres", "事件资源")
+	save_dialog.add_filter("*.tres", _t("事件资源"))
 	save_dialog.file_selected.connect(_save_as)
 	add_child(save_dialog)
-	status.text = "快速开始：打开演示事件 → 修改参数并应用 → 保存 → F6 运行场景。"
+	_show_status("快速开始：打开演示事件 → 修改参数并应用 → 保存 → F6 运行场景。")
 
 func button(parent: Node, text: String, action: Callable) -> Button:
 	var control := Button.new()
-	control.text = text
+	_set_text(control, text)
 	control.pressed.connect(action)
 	parent.add_child(control)
 	return control
 
 func label(parent: Node, text: String, font_size := 0) -> Label:
 	var control := Label.new()
-	control.text = text
+	_set_text(control, text)
 	control.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	if font_size: control.add_theme_font_size_override("font_size", font_size)
 	parent.add_child(control)
@@ -175,22 +204,23 @@ func edit_data(value: MEKEventData) -> void:
 
 func _new() -> void:
 	if data and dirty and data.resource_path.is_empty():
-		status.text = "当前新事件尚未保存。请先另存为，再新建事件。"
+		_show_status("当前新事件尚未保存。请先另存为，再新建事件。")
 		return
 	var value := Data.new()
-	value.pages.append(Data.default_page())
+	value.title = _t("新事件")
+	value.pages.append(Data.default_page(language))
 	edit_data(value)
 	dirty = true
 	dirty_resources[data.get_instance_id()] = data
-	status.text = "新事件已建立。编辑后另存为 .tres，再拖到 MEKMapEvent 的 Data 属性。"
+	_show_status("新事件已建立。编辑后另存为 .tres，再拖到 MEKMapEvent 的 Data 属性。")
 
 func _open(path: String) -> void:
 	if data and dirty and data.resource_path.is_empty():
-		status.text = "请先另存当前新事件，避免丢失修改。"
+		_show_status("请先另存当前新事件，避免丢失修改。")
 		return
 	var value := load(path)
 	if value is MEKEventData: edit_data(value)
-	else: status.text = "这不是 MEKEventData 事件资源。"
+	else: _show_status("这不是 MEKEventData 事件资源。")
 
 func _refresh() -> void:
 	pages_list.clear()
@@ -198,9 +228,9 @@ func _refresh() -> void:
 	_clear(page_form)
 	_clear(command_form)
 	if data == null: return
-	location.text = (data.resource_path if not data.resource_path.is_empty() else "尚未保存 · 请另存为 .tres") + ("  ● 已修改" if dirty else "")
+	_update_location()
 	title_field.text = data.title
-	for i in range(data.pages.size()): pages_list.add_item("%02d  %s" % [i + 1, data.pages[i].get("name", "事件页")])
+	for i in range(data.pages.size()): pages_list.add_item("%02d  %s" % [i + 1, data.pages[i].get("name", _t("事件页"))])
 	page_index = clampi(page_index, 0, maxi(0, data.pages.size() - 1))
 	if data.pages.is_empty(): return
 	pages_list.select(page_index)
@@ -219,14 +249,14 @@ func _refresh() -> void:
 
 func describe(c: Dictionary) -> String:
 	var op_index := OPS.find(str(c.get("op", "")))
-	var text: String = LABELS[op_index] if op_index >= 0 else "未知指令"
+	var text: String = _t(LABELS[op_index] if op_index >= 0 else "未知指令")
 	match c.get("op"):
 		"text": text += "  %s：%s" % [c.get("speaker", ""), str(c.get("text", "")).replace("\n", " ").left(42)]
 		"choices": text += "  → " + str(c.get("key", ""))
 		"set_switch", "set_self_switch", "if_switch", "if_self_switch": text += "  %s = %s" % [c.get("key", ""), "ON" if c.get("value", false) else "OFF"]
 		"set_variable", "add_variable", "if_variable": text += "  %s %s %s" % [c.get("key", ""), c.get("compare", "="), str(c.get("value", 0))]
 		"transfer": text += "  " + str(c.get("scene", "")).get_file()
-		"wait": text += "  %s 秒" % c.get("seconds", 0)
+		"wait": text += _t("  %s 秒") % c.get("seconds", 0)
 	return text
 
 func field(parent: Node, fields: Dictionary, key: String, caption: String, value: Variant, kind := "text", options: Array = []) -> void:
@@ -236,13 +266,14 @@ func field(parent: Node, fields: Dictionary, key: String, caption: String, value
 		"choice":
 			var picker := OptionButton.new()
 			for option in options:
-				picker.add_item(str(ENUM_LABELS.get(option, option)))
+				picker.add_item(_t(str(ENUM_LABELS.get(option, option))))
 				picker.set_item_metadata(picker.item_count - 1, str(option))
+			picker.set_meta("mek_labels", options.map(func(option): return str(ENUM_LABELS.get(option, option))))
 			picker.select(maxi(0, options.find(str(value))))
 			control = picker
 		"bool":
 			var toggle := CheckBox.new()
-			toggle.text = "开启 / ON"
+			_set_text(toggle, "开启 / ON")
 			toggle.button_pressed = bool(value)
 			control = toggle
 		"number":
@@ -297,12 +328,14 @@ func _condition_fields() -> void:
 
 func _command_form() -> void:
 	_clear(command_form)
+	command_heading = null
 	command_fields.clear()
 	if data == null or command_index < 0 or data.pages.is_empty():
 		label(command_form, "选择一条指令以编辑参数。\n修改参数后点击“应用指令”，再保存资源。")
 		return
 	var c: Dictionary = data.pages[page_index].commands[command_index]
-	label(command_form, describe(c), 18)
+	command_heading = label(command_form, describe(c), 18)
+	command_heading.remove_meta("mek_text")
 	match c.op:
 		"text":
 			field(command_form, command_fields, "speaker", "说话人", c.get("speaker", ""))
@@ -334,7 +367,7 @@ func _command_form() -> void:
 func _commit(pages: Array[Dictionary], action: String) -> void:
 	if data == null: return
 	var history := plugin.get_undo_redo()
-	history.create_action(action, UndoRedo.MERGE_DISABLE, data)
+	history.create_action(_t(action), UndoRedo.MERGE_DISABLE, data)
 	history.add_do_property(data, "pages", pages.duplicate(true))
 	history.add_undo_property(data, "pages", data.pages.duplicate(true))
 	history.add_do_method(self, "_changed", data)
@@ -352,7 +385,7 @@ func _changed(changed: MEKEventData) -> void:
 func _rename() -> void:
 	if data == null: return
 	var history := plugin.get_undo_redo()
-	history.create_action("修改事件名称", UndoRedo.MERGE_DISABLE, data)
+	history.create_action(_t("修改事件名称"), UndoRedo.MERGE_DISABLE, data)
 	history.add_do_property(data, "title", title_field.text)
 	history.add_undo_property(data, "title", data.title)
 	history.add_do_method(self, "_changed", data)
@@ -390,8 +423,8 @@ func _apply_command() -> void:
 func _add_page() -> void:
 	if data == null: return
 	var pages: Array[Dictionary] = data.pages.duplicate(true)
-	var p := Data.default_page()
-	p.name = "第 %d 页" % (pages.size() + 1)
+	var p := Data.default_page(language)
+	p.name = _t("第 %d 页") % (pages.size() + 1)
 	pages.append(p)
 	page_index = pages.size() - 1
 	command_index = -1
@@ -401,14 +434,14 @@ func _duplicate_page() -> void:
 	if data == null or data.pages.is_empty(): return
 	var pages: Array[Dictionary] = data.pages.duplicate(true)
 	var p: Dictionary = pages[page_index].duplicate(true)
-	p.name = str(p.name) + " 副本"
+	p.name = str(p.name) + _t(" 副本")
 	pages.insert(page_index + 1, p)
 	page_index += 1
 	_commit(pages, "复制事件页")
 
 func _delete_page() -> void:
 	if data == null or data.pages.size() <= 1:
-		status.text = "至少保留一个事件页。"
+		_show_status("至少保留一个事件页。")
 		return
 	var pages: Array[Dictionary] = data.pages.duplicate(true)
 	pages.remove_at(page_index)
@@ -428,7 +461,7 @@ func _add_command() -> void:
 	var pages: Array[Dictionary] = data.pages.duplicate(true)
 	var list: Array = pages[page_index].commands
 	command_index = command_index + 1 if command_index >= 0 else list.size()
-	list.insert(command_index, Data.default_command(OPS[command_picker.selected]))
+	list.insert(command_index, Data.default_command(OPS[command_picker.selected], language))
 	_commit(pages, "插入指令")
 
 func _duplicate_command() -> void:
@@ -457,8 +490,9 @@ func _move_command(offset: int) -> void:
 	_commit(pages, "移动指令")
 
 func _validate() -> bool:
-	var errors := Data.validate(data)
-	last_diagnostic = "检查通过 · 页条件、分支结构和资源路径有效。" if errors.is_empty() else "\n".join(errors)
+	showing_validation = true
+	var errors := Data.validate(data, language)
+	last_diagnostic = _t("检查通过 · 页条件、分支结构和资源路径有效。") if errors.is_empty() else "\n".join(errors)
 	status.text = last_diagnostic
 	status.modulate = Color("8ddbb7") if errors.is_empty() else Color("f2ab83")
 	return errors.is_empty()
@@ -470,7 +504,7 @@ func save_current() -> void:
 		return
 	if "::" in data.resource_path:
 		plugin.get_editor_interface().mark_scene_as_unsaved()
-		status.text = "内嵌资源随场景保存；建议另存为独立 .tres。"
+		_show_status("内嵌资源随场景保存；建议另存为独立 .tres。")
 		return
 	var error := ResourceSaver.save(data, data.resource_path)
 	if error == OK:
@@ -478,14 +512,14 @@ func save_current() -> void:
 		dirty_resources.erase(data.get_instance_id())
 		_refresh()
 		_validate()
-	else: status.text = "保存失败：" + error_string(error)
+	else: _show_status("保存失败：%s", [error_string(error)])
 
 func _save_as(path: String) -> void:
 	if data == null: return
 	var copy := data.duplicate(true) as MEKEventData
 	var error := ResourceSaver.save(copy, path)
 	if error != OK:
-		status.text = "保存失败：" + error_string(error)
+		_show_status("保存失败：%s", [error_string(error)])
 		return
 	copy.take_over_path(path)
 	dirty = false
@@ -506,3 +540,70 @@ func save_all() -> void:
 	if data:
 		dirty = dirty_resources.has(data.get_instance_id())
 		_refresh()
+
+
+func _t(source: String) -> String:
+	return I18n.text(source, language)
+
+func _resolved_language() -> String:
+	var editor_locale := str(plugin.get_editor_interface().get_editor_settings().get_setting("interface/editor/editor_language"))
+	return I18n.resolve(editor_locale if language_choice == "auto" else language_choice)
+
+func set_language(choice: String) -> void:
+	language_choice = choice if choice in I18n.LANGUAGES else "auto"
+	plugin.get_editor_interface().get_editor_settings().set_project_metadata("map_event_kit", "editor_language", language_choice)
+	language = _resolved_language()
+	_apply_language()
+
+func _editor_settings_changed() -> void:
+	if language_choice == "auto" and language != _resolved_language():
+		language = _resolved_language()
+		_apply_language()
+
+func _set_text(control: Control, source: String) -> void:
+	control.set_meta("mek_text", source)
+	control.set("text", _t(source))
+
+func _show_status(source: String, args: Array = []) -> void:
+	status_source = source
+	status_args = args
+	showing_validation = false
+	status.text = _t(source) if args.is_empty() else _t(source) % args
+
+func _update_location() -> void:
+	if data == null:
+		location.text = _t("打开一个事件资源，或在 2D 场景中选择 MEKMapEvent 节点。")
+	else:
+		location.text = (data.resource_path if not data.resource_path.is_empty() else _t("尚未保存 · 请另存为 .tres")) + (_t("  ● 已修改") if dirty else "")
+
+func _translate_tree(node: Node) -> void:
+	if node.has_meta("mek_text"):
+		node.set("text", _t(str(node.get_meta("mek_text"))))
+	if node.has_meta("mek_labels"):
+		var sources: Array = node.get_meta("mek_labels")
+		for i in range(sources.size()): node.set_item_text(i, _t(sources[i]))
+	# MenuButton owns an internal popup, omitted by get_children().
+	if node is MenuButton: _translate_tree(node.get_popup())
+	for child in node.get_children(): _translate_tree(child)
+
+func _apply_language() -> void:
+	# Update labels in place: rebuilding forms would discard pending user input.
+	_translate_tree(self)
+	language_picker.set_item_text(0, _t("跟随 Godot"))
+	language_picker.select(I18n.LANGUAGES.find(language_choice))
+	_update_location()
+	open_dialog.clear_filters()
+	open_dialog.add_filter("*.tres", _t("事件资源"))
+	save_dialog.clear_filters()
+	save_dialog.add_filter("*.tres", _t("事件资源"))
+	if data and not data.pages.is_empty():
+		var indent := 0
+		for i in range(data.pages[page_index].commands.size()):
+			var command: Dictionary = data.pages[page_index].commands[i]
+			if command.op in ["else", "end"]: indent = maxi(0, indent - 1)
+			commands_list.set_item_text(i, "%02d  %s%s" % [i + 1, "    ".repeat(indent), describe(command)])
+			if str(command.op).begins_with("if_") or command.op == "else": indent += 1
+		if is_instance_valid(command_heading) and command_index >= 0:
+			command_heading.text = describe(data.pages[page_index].commands[command_index])
+	if showing_validation: _validate()
+	else: _show_status(status_source, status_args)

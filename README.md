@@ -2,7 +2,7 @@
 
 RPG Maker style map events for Godot: event pages, conditions, command lists and a playable two-map demo.
 
-**0.1.0-alpha** · **MIT** · Tested with **Godot 4.7.2 Standard / Windows / Compatibility**.
+**0.1.1-alpha** · **MIT** · Tested with **Godot 4.7.2 Standard / Windows / Compatibility**.
 
 [GitHub repository](https://github.com/NoHaxJsut-Luck/godot-map-event-kit)
 
@@ -11,7 +11,7 @@ RPG Maker style map events for Godot: event pages, conditions, command lists and
 - [User manual — English → 日本語 → 한국어 → 中文](docs/USER_MANUAL.md)
 - [Technical documentation — English](docs/TECHNICAL.md)
 
-The editor and demo currently use Chinese. The manual includes the actual button labels alongside translated instructions. Interface localization is not implemented yet.
+Open the **Map Events** tab and choose **English / 日本語 / 한국어 / 简体中文** at the top right. The default follows Godot’s editor language, with English as the fallback. Switching updates the editor immediately and preserves pending input and undo history. Your preference is saved locally for this project. Demo story text remains in Chinese; authored event content is never automatically translated.
 
 ## Try the demo
 
@@ -35,12 +35,12 @@ Copy `addons/map_event_kit` into your project's `addons` folder and enable **Map
 - Visual forms with validation, undo/redo and resource saving.
 - Event-state persistence, example scenes and automated checks.
 
-The local verification reports contain [30 runtime checks](docs/testing/runtime-tests.json) and [13 editor checks](docs/testing/editor-tests.json), all passing. Installation in a fresh blank project also passed. Arbitrary existing projects, other platforms and exported builds have not been verified.
+The local verification reports contain [30 runtime checks](docs/testing/runtime-tests.json) and [50 editor checks](docs/testing/editor-tests.json), all passing. Installation in a fresh blank project also passed. Arbitrary existing projects, other platforms and exported builds have not been verified.
 
 This Alpha does not include battles, an inventory database, parallel events, movement routes or RPG Maker project import. Existing input, dialogue and save systems need project-specific integration.
 
 ## Development and distribution
 
-See the [technical documentation](docs/TECHNICAL.md#verification-and-reproducible-commands) for test commands. Run `python tools/package.py` to produce addon and demo ZIPs in `dist/`; both include the manuals. No itch.io release has been published.
+See the [technical documentation](docs/TECHNICAL.md#verification-and-reproducible-commands) for test commands. Run `python tools/package.py` to produce addon and demo ZIPs in `dist/`; both include the manuals. The project is available on [itch.io](https://nohaxjsut-luck.itch.io/godot-map-event-kit); check the download filename for its release version.
 
 Source code and bundled demo assets use the [MIT license](LICENSE). The demo uses generated shapes and synthesized audio.

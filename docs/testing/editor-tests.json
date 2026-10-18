@@ -51,6 +51,154 @@
 		{
 			"name": "validation status visible",
 			"passed": true
+		},
+		{
+			"name": "regional locale normalization and English fallback",
+			"passed": true
+		},
+		{
+			"name": "translation catalog is complete with matching placeholders",
+			"passed": true
+		},
+		{
+			"name": "en labels and enum choices translated",
+			"passed": true
+		},
+		{
+			"name": "en popup menu and field captions translated",
+			"passed": true
+		},
+		{
+			"name": "en pending text, number and boolean inputs survive",
+			"passed": true
+		},
+		{
+			"name": "en selection, stable IDs and resource contents unchanged",
+			"passed": true
+		},
+		{
+			"name": "en validation success translated",
+			"passed": true
+		},
+		{
+			"name": "en validation error translated with page and command numbers",
+			"passed": true
+		},
+		{
+			"name": "en new-content defaults localized",
+			"passed": true
+		},
+		{
+			"name": "ja labels and enum choices translated",
+			"passed": true
+		},
+		{
+			"name": "ja popup menu and field captions translated",
+			"passed": true
+		},
+		{
+			"name": "ja pending text, number and boolean inputs survive",
+			"passed": true
+		},
+		{
+			"name": "ja selection, stable IDs and resource contents unchanged",
+			"passed": true
+		},
+		{
+			"name": "ja validation success translated",
+			"passed": true
+		},
+		{
+			"name": "ja validation error translated with page and command numbers",
+			"passed": true
+		},
+		{
+			"name": "ja new-content defaults localized",
+			"passed": true
+		},
+		{
+			"name": "ko labels and enum choices translated",
+			"passed": true
+		},
+		{
+			"name": "ko popup menu and field captions translated",
+			"passed": true
+		},
+		{
+			"name": "ko pending text, number and boolean inputs survive",
+			"passed": true
+		},
+		{
+			"name": "ko selection, stable IDs and resource contents unchanged",
+			"passed": true
+		},
+		{
+			"name": "ko validation success translated",
+			"passed": true
+		},
+		{
+			"name": "ko validation error translated with page and command numbers",
+			"passed": true
+		},
+		{
+			"name": "ko new-content defaults localized",
+			"passed": true
+		},
+		{
+			"name": "zh_CN labels and enum choices translated",
+			"passed": true
+		},
+		{
+			"name": "zh_CN popup menu and field captions translated",
+			"passed": true
+		},
+		{
+			"name": "zh_CN pending text, number and boolean inputs survive",
+			"passed": true
+		},
+		{
+			"name": "zh_CN selection, stable IDs and resource contents unchanged",
+			"passed": true
+		},
+		{
+			"name": "zh_CN validation success translated",
+			"passed": true
+		},
+		{
+			"name": "zh_CN validation error translated with page and command numbers",
+			"passed": true
+		},
+		{
+			"name": "zh_CN new-content defaults localized",
+			"passed": true
+		},
+		{
+			"name": "apply preserved draft after language changes",
+			"passed": true
+		},
+		{
+			"name": "undo survives language switch",
+			"passed": true
+		},
+		{
+			"name": "redo survives language switch",
+			"passed": true
+		},
+		{
+			"name": "unapplied choice options survive language switch",
+			"passed": true
+		},
+		{
+			"name": "language preference persists across panel recreation",
+			"passed": true
+		},
+		{
+			"name": "automatic choice follows Godot editor language",
+			"passed": true
+		},
+		{
+			"name": "language suite completed without script errors",
+			"passed": true
 		}
 	],
 	"engine": "4.7.2-stable (official)",

@@ -28,7 +28,7 @@ func _ensure_autoload() -> void:
 		if ProjectSettings.has_setting("autoload/MapEvents"): return
 		add_autoload_singleton("MapEvents", "res://addons/map_event_kit/runtime/event_runtime.gd")
 	elif not _owns_autoload():
-		push_warning("Map Event Kit: MapEvents 自动加载名称已被其他脚本占用。请先解决名称冲突。")
+		push_warning(panel._t("Map Event Kit: MapEvents 自动加载名称已被其他脚本占用。请先解决名称冲突。"))
 
 func _disable_plugin() -> void:
 	if _owns_autoload():
@@ -40,7 +40,7 @@ func _exit_tree() -> void:
 		panel.queue_free()
 
 func _has_main_screen() -> bool: return true
-func _get_plugin_name() -> String: return "地图事件"
+func _get_plugin_name() -> String: return "Map Events"
 func _get_plugin_icon() -> Texture2D: return get_editor_interface().get_base_control().get_theme_icon("Script", "EditorIcons")
 func _make_visible(value: bool) -> void:
 	if panel: panel.visible = value
@@ -48,12 +48,12 @@ func _handles(object: Object) -> bool: return object is MEKEventData or object i
 func _edit(object: Object) -> void:
 	if object is MEKEventData: panel.edit_data(object)
 	elif object is MEKMapEvent and object.data: panel.edit_data(object.data)
-	if panel: get_editor_interface().set_main_screen_editor("地图事件")
+	if panel: get_editor_interface().set_main_screen_editor("Map Events")
 func _save_external_data() -> void:
 	if panel: panel.save_all()
 
 func _get_unsaved_status(_for_scene: String) -> String:
-	if panel and not panel.dirty_resources.is_empty(): return "地图事件有尚未保存的修改。"
+	if panel and not panel.dirty_resources.is_empty(): return panel._t("地图事件有尚未保存的修改。")
 	return ""
 
 func _build() -> bool:
